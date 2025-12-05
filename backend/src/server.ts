@@ -1,12 +1,31 @@
-import express from "express";
-import { PrismaClient } from "@prisma/client";
+import app from "./app.js";
+import prisma from "../prisma/client.js";
 
-const prisma = new PrismaClient();
-
-const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
-});
+async function startServer() {
+  try {
+    console.log("Connecting to database...");
+    await prisma.$connect();
+    console.log("Database connected.");
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+
+    // Graceful Shutdown
+    const shutdown = async () => {
+      console.log("Shutting down server...");
+      await prisma.$disconnect();
+      process.exit(0);
+    };
+
+    process.on("SIGINT", shutdown);
+    process.on("SIGTERM", shutdown);
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
