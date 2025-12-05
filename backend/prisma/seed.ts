@@ -1,9 +1,15 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import prisma from "./client.js";
 
 async function main() {
+  // Clear existing data
+  await prisma.product.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.order.deleteMany();
+  await prisma.orderItem.deleteMany();
+
+  // Seed initial products
   await prisma.product.createMany({
     data: [
       {
