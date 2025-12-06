@@ -1,6 +1,7 @@
 //handles request/response
 import type { Request, Response, NextFunction } from "express";
 import * as userService from "../services/userService.js";
+import logger from "../logger.js";
 
 // GET /users/:id
 export const getUserById = async (
@@ -17,6 +18,7 @@ export const getUserById = async (
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    logger.info(`User ${userId} retrieved successfully.`);
     res.json({ user });
   } catch (err) {
     next(err);
