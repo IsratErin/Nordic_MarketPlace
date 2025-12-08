@@ -1,7 +1,7 @@
-//handles request/response
 import type { Request, Response, NextFunction } from "express";
 import * as userService from "../services/userService.js";
 import logger from "../logger.js";
+import { ApiError } from "../utils/apiError.js";
 
 // GET /users/:id
 export const getUserById = async (
@@ -11,13 +11,17 @@ export const getUserById = async (
 ) => {
   try {
     const userId = Number(req.params.id);
+
     if (isNaN(userId)) {
-      return res.status(400).json({ message: "Invalid user ID" });
+      return next(ApiError.badRequest("Invalid user ID"));
     }
-    const user = await userService.getUser(userId); // Call to service layer to get user from DB
+
+    const user = await userService.getUser(userId);
+
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return next(ApiError.notFound("User not found"));
     }
+
     logger.info(`User ${userId} retrieved successfully.`);
     res.json({ user });
   } catch (err) {
