@@ -1,8 +1,7 @@
-import type { Request, Response, NextFunction } from "express";
-import { ZodError } from "zod";
-import { ApiError } from "../utils/apiError.js";
-import logger from "../logger.js";
-import e from "express";
+import type { Request, Response, NextFunction } from 'express';
+import { ZodError } from 'zod';
+import { ApiError } from '../utils/apiError.js';
+import logger from '../logger.js';
 
 type error = {
   statusCode?: number;
@@ -16,16 +15,14 @@ export const errorMiddleware = (
   err: error,
   _req: Request, // added underscore
   res: Response,
-  _next: NextFunction // added underscore to indicate unused variable
+  _next: NextFunction, // added underscore to indicate unused variable
 ) => {
-  logger.error(
-    `Error: ${err.message} \n Stack: ${err.stack}\n statusCode: ${err.statusCode}`
-  );
+  logger.error(`Error: ${err.message} \n Stack: ${err.stack}\n statusCode: ${err.statusCode}`);
 
   // Zod validation errors
   if (err instanceof ZodError) {
     return res.status(400).json({
-      status: "fail",
+      status: 'fail',
       message: `Zod Validation error: ${err.message}`,
     });
   }
@@ -33,32 +30,32 @@ export const errorMiddleware = (
   //  Custom API Error
   if (err instanceof ApiError) {
     return res.status(err.statusCode).json({
-      status: err.statusCode < 500 ? "fail" : "error",
+      status: err.statusCode < 500 ? 'fail' : 'error',
       message: err.message,
     });
   }
 
   // 3. Prisma errors with code
-  if (err.code && typeof err.code === "string") {
-    if (err.code === "P2002") {
+  if (err.code && typeof err.code === 'string') {
+    if (err.code === 'P2002') {
       return res.status(409).json({
-        status: "fail",
-        message: "Unique constraint violation",
+        status: 'fail',
+        message: 'Unique constraint violation',
         target: err.meta?.target,
       });
     }
 
-    if (err.code === "P2025") {
+    if (err.code === 'P2025') {
       return res.status(404).json({
-        status: "fail",
-        message: "Record not found",
+        status: 'fail',
+        message: 'Record not found',
       });
     }
 
     // Generic Prisma error fallback
     return res.status(400).json({
-      status: "fail",
-      message: "Database error",
+      status: 'fail',
+      message: 'Database error',
       code: err.code,
       details: err.meta,
     });
@@ -66,7 +63,7 @@ export const errorMiddleware = (
 
   // unhandled errors or unknown errors
   return res.status(500).json({
-    status: "error",
-    message: "Internal Server Error",
+    status: 'error',
+    message: 'Internal Server Error',
   });
 };

@@ -1,6 +1,6 @@
-import "dotenv/config";
+import 'dotenv/config';
 
-import prisma from "./client.js";
+import prisma from './client.js';
 
 async function main() {
   // Clear existing data
@@ -13,27 +13,27 @@ async function main() {
   await prisma.product.createMany({
     data: [
       {
-        name: "Laptop",
-        description: "Powerful laptop",
+        name: 'Laptop',
+        description: 'Powerful laptop',
         price: 1200,
         stock: 10,
       },
       {
-        name: "Smartphone",
-        description: "Latest phone",
+        name: 'Smartphone',
+        description: 'Latest phone',
         price: 800,
         stock: 20,
       },
       {
-        name: "Headphones",
-        description: "Noise-cancelling",
+        name: 'Headphones',
+        description: 'Noise-cancelling',
         price: 200,
         stock: 15,
       },
     ],
   });
 
-  console.log("Seeded successfully!");
+  console.log('Seeded successfully!');
 }
 
 main()

@@ -1,6 +1,6 @@
 //Prisma + business logic for user-related operations
-import prisma from "../../prisma/client.js";
-import { ApiError } from "../utils/apiError.js";
+import prisma from '../../prisma/client.js';
+import { ApiError } from '../utils/apiError.js';
 
 // Fetch a user by their ID
 const getUser = async (userId: number) => {
@@ -16,7 +16,7 @@ const getUser = async (userId: number) => {
       },
     });
   } catch (err) {
-    throw ApiError.internal("Database error");
+    throw ApiError.internal('Database error');
   }
 };
 
@@ -31,7 +31,7 @@ const allUsers = async () => {
       },
     });
   } catch (err) {
-    throw ApiError.internal("Database error");
+    throw ApiError.internal('Database error');
   }
 };
 
