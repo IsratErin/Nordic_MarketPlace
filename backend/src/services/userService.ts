@@ -20,4 +20,19 @@ const getUser = async (userId: number) => {
   }
 };
 
-export { getUser };
+const allUsers = async () => {
+  try {
+    return await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+  } catch (err) {
+    throw ApiError.internal("Database error");
+  }
+};
+
+export { getUser, allUsers };

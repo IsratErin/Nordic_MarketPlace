@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
 import { ApiError } from "../utils/apiError.js";
 import logger from "../logger.js";
+import e from "express";
 
 type error = {
   statusCode?: number;
@@ -22,7 +23,13 @@ export const errorMiddleware = (
   );
 
   // Zod validation errors
-  //
+  if (err instanceof ZodError) {
+    return res.status(400).json({
+      status: "fail",
+      message: `Zod Validation error: ${err.message}`,
+    });
+  }
+
   //  Custom API Error
   if (err instanceof ApiError) {
     return res.status(err.statusCode).json({
