@@ -56,6 +56,7 @@ const allUsers = async () => {
         id: true,
         name: true,
         email: true,
+        address: true,
         role: true,
         createdAt: true,
       },
