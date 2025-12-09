@@ -28,6 +28,7 @@ const allUsers = async () => {
         name: true,
         email: true,
         role: true,
+        createdAt: true,
       },
     });
   } catch (err) {

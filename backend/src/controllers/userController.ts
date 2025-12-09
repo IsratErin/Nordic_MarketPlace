@@ -4,6 +4,8 @@ import logger from '../logger.js';
 import { ApiError } from '../utils/apiError.js';
 import { userSchema } from '../utils/validators.js';
 
+//logger.info('Logger is working in userController.ts');
+
 //GET /users/allUsers
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
