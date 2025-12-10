@@ -13,4 +13,19 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
     next(err);
   }
 };
-export { getAllProducts };
+
+const getProductInfo = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const productId = Number(req.params.id);
+    const productInfo = await userService.getProductInfo(productId);
+    const validatedProduct = productSchema.parse(productInfo);
+    logger.info(
+      `Product info for ID : ${productId}, Name: ${validatedProduct.name.toUpperCase()} retrieved successfully.`,
+    );
+    res.json({ product: validatedProduct });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { getAllProducts, getProductInfo };

@@ -15,6 +15,10 @@ const productSchema = z.object({
   description: z.string().max(1000).optional(),
   price: z.number().nonnegative(),
   stock: z.number().int().nonnegative(),
+  category: z.object({
+    id: z.number().int().positive(),
+    name: z.string().min(2).max(100),
+  }),
   // Timestamps
 });
 
