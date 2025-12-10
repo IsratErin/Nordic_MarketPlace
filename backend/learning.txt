@@ -1,0 +1,26 @@
+# Common examples of API errors
+Type	Example	Status Code
+Client errors (4xx)	Invalid input, missing parameters	400 Bad Request
+	Unauthorized access	401 Unauthorized
+	Forbidden resource	403 Forbidden
+	Resource not found	404 Not Found
+Server errors (5xx)	Unexpected database error	500 Internal Server Error
+	Third-party API fails	502 Bad Gateway / 503 Service Unavailable
+
+#Here’s a concise summary of the benefits of using error middleware:  (Seperation of Concerns in robust System Design)
+-Centralized error handling – All errors (Zod, Prisma, custom) are handled in one place. 
+-Consistent responses – Returns uniform JSON structure for all errors.
+-Clean controllers – Controllers stay thin; no repeated res.status(...).json(...) logic, only focus on business logic
+-Supports multiple error types – Validation, database, authentication, and custom errors.
+-Easier maintenance & scaling – Adding new routes or services doesn’t require rewriting error logic.
+-Production-ready – Simplifies logging, monitoring, and debugging.
+-AWS / container friendly – Works well in distributed or serverless environments.
+-Middleware (errorMiddleware.ts) handles the mapping from internal errors to user-friendly API responses about the errors.
+
+#Prisma and TypeScript are strict with optional fields
+When exactOptionalPropertyTypes is enabled, TypeScript treats these differently:
+string | null
+string | undefined
+These are not interchangeable.
+If a type expects string | null, you MUST NOT pass undefined.
+Zod .optional() produces undefined. Use .transform() to convert undefined → null

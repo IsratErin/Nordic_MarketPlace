@@ -2,6 +2,11 @@
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 
+type userUpdateData = {
+  name?: string;
+  email?: string;
+};
+
 // Fetch a user by their ID
 const getUser = async (userId: number) => {
   try {
@@ -11,8 +16,32 @@ const getUser = async (userId: number) => {
         id: true,
         name: true,
         email: true,
+        address: true,
         role: true,
         createdAt: true,
+      },
+    });
+  } catch (err) {
+    throw ApiError.internal('Database error');
+  }
+};
+
+const updateUser = async (userId: number, data: userUpdateData) => {
+  try {
+    if (Object.keys(data).length === 0) {
+      throw ApiError.badRequest('No fields provided to update');
+    }
+    return await prisma.user.update({
+      where: { id: userId },
+      data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        address: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
   } catch (err) {
@@ -27,6 +56,7 @@ const allUsers = async () => {
         id: true,
         name: true,
         email: true,
+        address: true,
         role: true,
         createdAt: true,
       },
@@ -36,4 +66,4 @@ const allUsers = async () => {
   }
 };
 
-export { getUser, allUsers };
+export { getUser, allUsers, updateUser };
