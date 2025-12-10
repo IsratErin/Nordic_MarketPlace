@@ -3,7 +3,7 @@ import { ZodError } from 'zod';
 import { ApiError } from '../utils/apiError.js';
 import logger from '../logger.js';
 
-type error = {
+export type error = {
   statusCode?: number;
   message?: string;
   code?: string;

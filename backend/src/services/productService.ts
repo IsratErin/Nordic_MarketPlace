@@ -9,6 +9,8 @@ type newProductInfo = {
   description?: string | null;
 };
 
+//type updateProductInfo = Partial<newProductInfo>;
+
 const getAllProducts = async () => {
   try {
     const products = await prisma.product.findMany({
@@ -78,4 +80,37 @@ const addNewProduct = async (productInfo: newProductInfo) => {
     throw ApiError.internal(`Database error`);
   }
 };
-export { getAllProducts, getProductInfo, getProductsByCategory, addNewProduct };
+
+const updateProductInfo = async (productId: number, updateData: newProductInfo) => {
+  try {
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: updateData,
+    });
+    return updatedProduct;
+  } catch (err) {
+    throw ApiError.internal('Database error');
+  }
+};
+
+const deleteProductInfo = async (productId: number) => {
+  try {
+    await prisma.product.delete({
+      where: { id: productId },
+    });
+  } catch (err: any) {
+    if (err.code === 'P2025') {
+      // Prisma error code for "Record to delete does not exist."
+      throw ApiError.notFound('Product not found');
+    }
+    throw ApiError.internal('Database error');
+  }
+};
+export {
+  getAllProducts,
+  getProductInfo,
+  getProductsByCategory,
+  addNewProduct,
+  updateProductInfo,
+  deleteProductInfo,
+};

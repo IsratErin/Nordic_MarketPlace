@@ -56,4 +56,35 @@ const addNewProduct = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
-export { getAllProducts, getProductInfo, getAllProductsByCategory, addNewProduct };
+const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const productId = Number(req.params.id);
+    const updateData = req.body;
+    const validatedUpdateData = newProductSchema.parse(updateData);
+    const updatedProduct = await productService.updateProductInfo(productId, validatedUpdateData);
+    logger.info(`Product ID: ${productId} updated successfully.`);
+    res.json({ updatedProduct });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const productId = Number(req.params.id);
+    await productService.deleteProductInfo(productId);
+    logger.info(`Product with ID: ${productId} deleted successfully.`);
+    res.json({ message: 'Product deleted successfully' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export {
+  getAllProducts,
+  getProductInfo,
+  getAllProductsByCategory,
+  addNewProduct,
+  updateProduct,
+  deleteProduct,
+};

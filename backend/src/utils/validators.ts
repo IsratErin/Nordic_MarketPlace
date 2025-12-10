@@ -32,4 +32,5 @@ const newProductSchema = z.object({
   stock: z.number().int().nonnegative(),
   categoryId: z.number().int().positive(),
 });
+
 export { userSchema, productSchema, newProductSchema };
