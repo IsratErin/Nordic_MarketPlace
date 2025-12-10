@@ -1,5 +1,6 @@
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
+import { Prisma } from '@prisma/client';
 
 type newProductInfo = {
   name: string;
@@ -9,7 +10,27 @@ type newProductInfo = {
   description?: string | null;
 };
 
-//type updateProductInfo = Partial<newProductInfo>;
+// Helper to handle Prisma errors inside try/catch
+export const handlePrismaError = (err: unknown) => {
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    switch (err.code) {
+      case 'P2002':
+        // Including the conflicting field in meta
+        throw ApiError.badRequest('Unique constraint violation', { target: err.meta?.target });
+      case 'P2025':
+        throw ApiError.notFound('Record not found');
+      default:
+        throw ApiError.internal(`Prisma error: ${err.message}`, { code: err.code, meta: err.meta });
+    }
+  }
+
+  if (err instanceof Prisma.PrismaClientValidationError) {
+    throw ApiError.badRequest(`Validation error: ${err.message}`);
+  }
+
+  console.error('Unexpected error:', err);
+  throw ApiError.internal('Database error');
+};
 
 const getAllProducts = async () => {
   try {
@@ -25,7 +46,7 @@ const getAllProducts = async () => {
     });
     return products;
   } catch (err) {
-    throw ApiError.internal('Database error');
+    handlePrismaError(err);
   }
 };
 
@@ -47,7 +68,7 @@ const getProductInfo = async (productId: number) => {
     }
     return product;
   } catch (err) {
-    throw ApiError.internal('Database error');
+    handlePrismaError(err);
   }
 };
 
@@ -66,7 +87,7 @@ const getProductsByCategory = async (catId: number) => {
     });
     return products;
   } catch (err) {
-    throw ApiError.internal('Database error');
+    handlePrismaError(err);
   }
 };
 
@@ -77,7 +98,7 @@ const addNewProduct = async (productInfo: newProductInfo) => {
     });
     return newProduct;
   } catch (err) {
-    throw ApiError.internal(`Database error`);
+    handlePrismaError(err);
   }
 };
 
@@ -89,7 +110,7 @@ const updateProductInfo = async (productId: number, updateData: newProductInfo) 
     });
     return updatedProduct;
   } catch (err) {
-    throw ApiError.internal('Database error');
+    handlePrismaError(err);
   }
 };
 
@@ -98,12 +119,8 @@ const deleteProductInfo = async (productId: number) => {
     await prisma.product.delete({
       where: { id: productId },
     });
-  } catch (err: any) {
-    if (err.code === 'P2025') {
-      // Prisma error code for "Record to delete does not exist."
-      throw ApiError.notFound('Product not found');
-    }
-    throw ApiError.internal('Database error');
+  } catch (err) {
+    handlePrismaError(err);
   }
 };
 export {

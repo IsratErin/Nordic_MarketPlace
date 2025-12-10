@@ -6,7 +6,7 @@ import { productSchema, newProductSchema } from '../utils/validators.js';
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const products = await productService.getAllProducts();
-    const validatedProducts = products.map((product) => productSchema.parse(product));
+    const validatedProducts = (products || []).map((product) => productSchema.parse(product));
     logger.info(`All products retrieved successfully.`);
     res.json({ products: validatedProducts });
   } catch (err) {
@@ -32,7 +32,7 @@ const getAllProductsByCategory = async (req: Request, res: Response, next: NextF
   try {
     const categoryId = Number(req.params.categoryId);
     const products = await productService.getProductsByCategory(categoryId);
-    const validatedProducts = products.map((product) => productSchema.parse(product));
+    const validatedProducts = (products || []).map((product) => productSchema.parse(product));
     logger.info(
       `All products from Category: ${validatedProducts[0]?.category.name.toUpperCase()} retrieved successfully.`,
     );

@@ -17,13 +17,20 @@ export const errorMiddleware = (
   res: Response,
   _next: NextFunction, // added underscore to indicate unused variable
 ) => {
-  logger.error(`Error: ${err.message} \n Stack: ${err.stack}\n statusCode: ${err.statusCode}`);
+  logger.error(
+    `Error: ${err.message} \n Stack: ${err.stack}\n statusCode: ${err.statusCode}\n Meta: ${JSON.stringify(err.meta)}`,
+  );
 
   // Zod validation errors
   if (err instanceof ZodError) {
     return res.status(400).json({
       status: 'fail',
       message: `Zod Validation error: ${err.message}`,
+      //specific path
+      meta: err.issues.map((e) => ({
+        path: e.path.join('.'),
+        message: e.message,
+      })),
     });
   }
 
@@ -32,6 +39,7 @@ export const errorMiddleware = (
     return res.status(err.statusCode).json({
       status: err.statusCode < 500 ? 'fail' : 'error',
       message: err.message,
+      meta: err.meta,
     });
   }
 
@@ -41,7 +49,7 @@ export const errorMiddleware = (
       return res.status(409).json({
         status: 'fail',
         message: 'Unique constraint violation',
-        target: err.meta?.target,
+        meta: { target: err.meta?.target },
       });
     }
 
@@ -49,6 +57,7 @@ export const errorMiddleware = (
       return res.status(404).json({
         status: 'fail',
         message: 'Record not found',
+        meta: err.meta || null,
       });
     }
 
@@ -57,13 +66,13 @@ export const errorMiddleware = (
       status: 'fail',
       message: 'Database error',
       code: err.code,
-      details: err.meta,
+      meta: err.meta || null,
     });
   }
 
   // unhandled errors or unknown errors
   return res.status(500).json({
     status: 'error',
-    message: 'Internal Server Error',
+    message: err.message || 'Internal Server Error',
   });
 };
