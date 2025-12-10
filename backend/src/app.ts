@@ -14,6 +14,7 @@ app.use(express.json());
 //API Routes
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
+
 app.use(errorMiddleware);
 
 export default app;
