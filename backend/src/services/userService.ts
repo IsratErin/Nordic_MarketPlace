@@ -1,11 +1,14 @@
 //Prisma + business logic for user-related operations
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
+import type { User, UpdateUserInfo } from '../utils/types.js';
+import { removeUndefined } from '../utils/types.js';
 
+/*
 type userUpdateData = {
   name?: string;
   email?: string;
-};
+};*/
 
 // Fetch a user by their ID
 const getUser = async (userId: number) => {
@@ -26,14 +29,15 @@ const getUser = async (userId: number) => {
   }
 };
 
-const updateUser = async (userId: number, data: userUpdateData) => {
+const updateUser = async (userId: number, data: UpdateUserInfo) => {
   try {
-    if (Object.keys(data).length === 0) {
+    const dataToUpdate = removeUndefined(data); // Removes undefined fields from the data provided for update
+    if (Object.keys(dataToUpdate).length === 0) {
       throw ApiError.badRequest('No fields provided to update');
     }
     return await prisma.user.update({
       where: { id: userId },
-      data,
+      data: dataToUpdate,
       select: {
         id: true,
         name: true,

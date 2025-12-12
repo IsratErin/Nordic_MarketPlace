@@ -3,11 +3,18 @@ import { z } from 'zod';
 const userSchema = z.object({
   id: z.number().int().positive(),
   name: z.string().min(2).max(100),
-  email: z.string().email(),
+  email: z.string().email().max(255).min(5),
   role: z.enum(['ADMIN', 'USER', 'GUEST']),
   address: z.string().max(255).optional(),
   // Timestamps
 });
+const updateUserSchema = z
+  .object({
+    name: z.string().min(2).max(100),
+    email: z.string().email().max(255).min(5),
+    address: z.string().max(255),
+  })
+  .partial();
 
 const productSchema = z.object({
   id: z.number().int().positive(),
@@ -15,7 +22,7 @@ const productSchema = z.object({
   description: z
     .string()
     .max(1000)
-    .nullable() // accepts null from database and runs before validation as optional
+    .nullable() // accepts null from database
     .optional()
     .transform((v) => v ?? null),
   price: z.number().nonnegative(),
@@ -59,4 +66,5 @@ export {
   orderSchema,
   orderStatusEnum,
   orderItemSchema,
+  updateUserSchema,
 };
