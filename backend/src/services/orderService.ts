@@ -76,4 +76,28 @@ const deleteOrder = async (orderId: number) => {
   }
 };
 
-export { createOrder, getOrderInfo, getUserOrders, updateOrderStatus, deleteOrder };
+const admingetOrderInfo = async (orderId: number) => {
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        items: true,
+        user: {
+          select: { id: true, name: true, email: true }, // limited user info excluding sensitive data like password, orders etc
+        },
+      },
+    });
+    return order;
+  } catch (err) {
+    handlePrismaError(err);
+  }
+};
+
+export {
+  createOrder,
+  getOrderInfo,
+  getUserOrders,
+  updateOrderStatus,
+  deleteOrder,
+  admingetOrderInfo,
+};
