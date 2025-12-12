@@ -1,6 +1,6 @@
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
-import { Prisma } from '@prisma/client';
+import { handlePrismaError } from '../utils/prismaError.js';
 
 type newProductInfo = {
   name: string;
@@ -8,28 +8,6 @@ type newProductInfo = {
   stock: number;
   categoryId: number;
   description?: string | null;
-};
-
-// Helper to handle Prisma errors inside try/catch
-export const handlePrismaError = (err: unknown) => {
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    switch (err.code) {
-      case 'P2002':
-        // Including the conflicting field in meta
-        throw ApiError.badRequest('Unique constraint violation', { target: err.meta?.target });
-      case 'P2025':
-        throw ApiError.notFound('Record not found');
-      default:
-        throw ApiError.internal(`Prisma error: ${err.message}`, { code: err.code, meta: err.meta });
-    }
-  }
-
-  if (err instanceof Prisma.PrismaClientValidationError) {
-    throw ApiError.badRequest(`Validation error: ${err.message}`);
-  }
-
-  console.error('Unexpected error:', err);
-  throw ApiError.internal('Database error');
 };
 
 const getAllProducts = async () => {

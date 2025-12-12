@@ -5,6 +5,7 @@ import { errorMiddleware } from './middleware/errorMiddleware.js';
 
 import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 //API Routes
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
+app.use('/orders', orderRoutes);
 
 app.use(errorMiddleware);
 
