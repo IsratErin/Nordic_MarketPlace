@@ -12,7 +12,12 @@ const userSchema = z.object({
 const productSchema = z.object({
   id: z.number().int().positive(),
   name: z.string().min(2).max(150),
-  description: z.string().max(1000).optional(),
+  description: z
+    .string()
+    .max(1000)
+    .nullable() // accepts null from database and runs before validation as optional
+    .optional()
+    .transform((v) => v ?? null),
   price: z.number().nonnegative(),
   stock: z.number().int().nonnegative(),
   category: z.object({
@@ -33,4 +38,25 @@ const newProductSchema = z.object({
   categoryId: z.number().int().positive(),
 });
 
-export { userSchema, productSchema, newProductSchema };
+const orderStatusEnum = z.enum(['PLACED', 'PACKED', 'SHIPPED', 'DELIVERED']);
+const orderSchema = z.object({
+  id: z.number().int().positive(),
+  userId: z.number().int().positive(),
+  status: orderStatusEnum,
+  // Timestamps
+});
+
+const orderItemSchema = z.object({
+  productId: z.number().int().positive(),
+  quantity: z.number().int().positive(),
+  price: z.number().nonnegative(),
+});
+
+export {
+  userSchema,
+  productSchema,
+  newProductSchema,
+  orderSchema,
+  orderStatusEnum,
+  orderItemSchema,
+};
