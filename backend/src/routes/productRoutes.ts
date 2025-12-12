@@ -16,7 +16,7 @@ router.get(`/category/:categoryId`, getAllProductsByCategory);
 
 //admin routes
 router.post(`/admin/addproduct`, addNewProduct);
-router.post(`/admin/updateproduct/:id`, updateProduct);
+router.put(`/admin/updateproduct/:id`, updateProduct);
 router.delete(`/admin/deleteproduct/:id`, deleteProduct);
 
 export default router;

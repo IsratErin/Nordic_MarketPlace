@@ -24,3 +24,17 @@ string | undefined
 These are not interchangeable.
 If a type expects string | null, you MUST NOT pass undefined.
 Zod .optional() produces undefined. Use .transform() to convert undefined → null
+
+Why string().optional() fails with reading null data from database? : optional() means:
+allowed: string, undefined
+NOT allowed: null
+The transform runs after validation.
+So it never reaches .transform((v) => v ?? null) because validation already failed. So solution is .nullable() before .optional()
+
+#Zod ensures and adds runtime validation, so that data really matches TypeScript types.
+Required fields are present, Types match (string, number, boolean, etc.), Input isn’t malformed or dangerous
+Without validation, bad data could: Crash the server, Corrupt the database, Create vulnerabilities
+
+# When using exactOptionalPropertyTypes: true in TypeScript,
+- we must filter out undefined values from partial update info objects before passing them to Prisma.
+- because Zod's .partial() creates T | undefined types, and prisma doesn’t acceppt poperties as undefined.

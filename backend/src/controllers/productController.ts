@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import * as productService from '../services/productService.js';
 import logger from '../logger.js';
 import { productSchema, newProductSchema } from '../utils/validators.js';
+//import type { Product } from '../utils/types.js';
 
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {

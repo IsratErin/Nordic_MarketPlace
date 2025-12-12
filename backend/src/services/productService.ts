@@ -1,16 +1,17 @@
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 import { handlePrismaError } from '../utils/prismaError.js';
+import type { Product, NewProductInfo } from '../utils/types.js';
 
-type newProductInfo = {
+/*type newProductInfo = {
   name: string;
   price: number;
   stock: number;
   categoryId: number;
   description?: string | null;
-};
+};*/
 
-const getAllProducts = async () => {
+const getAllProducts = async (): Promise<Product[]> => {
   try {
     const products = await prisma.product.findMany({
       select: {
@@ -22,9 +23,11 @@ const getAllProducts = async () => {
         category: true,
       },
     });
+
     return products;
   } catch (err) {
     handlePrismaError(err);
+    throw new Error('Unreachable'); // added for type safety for now
   }
 };
 
@@ -69,7 +72,7 @@ const getProductsByCategory = async (catId: number) => {
   }
 };
 
-const addNewProduct = async (productInfo: newProductInfo) => {
+const addNewProduct = async (productInfo: NewProductInfo) => {
   try {
     const newProduct = await prisma.product.create({
       data: productInfo,
@@ -80,7 +83,7 @@ const addNewProduct = async (productInfo: newProductInfo) => {
   }
 };
 
-const updateProductInfo = async (productId: number, updateData: newProductInfo) => {
+const updateProductInfo = async (productId: number, updateData: NewProductInfo) => {
   try {
     const updatedProduct = await prisma.product.update({
       where: { id: productId },

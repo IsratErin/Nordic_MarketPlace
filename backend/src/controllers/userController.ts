@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import * as userService from '../services/userService.js';
 import logger from '../logger.js';
 import { ApiError } from '../utils/apiError.js';
-import { userSchema } from '../utils/validators.js';
+import { userSchema, updateUserSchema } from '../utils/validators.js';
 
 //logger.info('Logger is working in userController.ts');
 
@@ -46,7 +46,8 @@ const updateUserById = async (req: Request, res: Response, next: NextFunction) =
       return next(ApiError.badRequest('Invalid user ID'));
     }
     const updateData = req.body;
-    const updatedUser = await userService.updateUser(userId, updateData);
+    const validatedUpdateData = updateUserSchema.parse(updateData);
+    const updatedUser = await userService.updateUser(userId, validatedUpdateData);
     const validatedUser = userSchema.parse(updatedUser);
     logger.info(`User ${userId} updated successfully.`);
     res.json({ updatedUser: validatedUser });

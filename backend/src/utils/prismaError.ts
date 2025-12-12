@@ -1,11 +1,10 @@
 import { Prisma } from '@prisma/client';
 import { ApiError } from './apiError.js';
 
-export const handlePrismaError = (err: unknown) => {
+export const handlePrismaError = (err: unknown): never => {
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {
       case 'P2002':
-        // Including the conflicting field in meta
         throw ApiError.badRequest('Unique constraint violation', { target: err.meta?.target });
       case 'P2025':
         throw ApiError.notFound('Record not found');
