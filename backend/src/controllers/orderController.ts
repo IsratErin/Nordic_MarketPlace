@@ -1,6 +1,6 @@
 import * as orderService from '../services/orderService.js';
 import logger from '../logger.js';
-import {} from '../utils/validators.js';
+import { orderSchema } from '../utils/validators.js';
 import type { Request, Response, NextFunction } from 'express';
 
 //user creates a new order
@@ -21,8 +21,9 @@ const getOrderInfo = async (req: Request, res: Response, next: NextFunction) => 
   try {
     const orderId = Number(req.params.orderId);
     const order = await orderService.getOrderInfo(orderId);
+    const validatedOrder = orderSchema.parse(order);
     logger.info(`Fetched info for Order ID: ${orderId}`);
-    res.json({ orderInfo: order });
+    res.json({ orderInfo: validatedOrder });
   } catch (err) {
     next(err);
   }

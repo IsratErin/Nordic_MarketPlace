@@ -1,5 +1,6 @@
 import prisma from '../../prisma/client.js';
 import { handlePrismaError } from '../utils/prismaError.js';
+import type { Order } from '../utils/types.js';
 
 const createOrder = async (userId: number, productIds: number[]) => {
   try {
@@ -29,7 +30,7 @@ const createOrder = async (userId: number, productIds: number[]) => {
   }
 };
 
-const getOrderInfo = async (orderId: number) => {
+const getOrderInfo = async (orderId: number): Promise<Order | null> => {
   try {
     const order = await prisma.order.findUnique({
       where: { id: orderId },
@@ -38,10 +39,11 @@ const getOrderInfo = async (orderId: number) => {
     return order;
   } catch (err) {
     handlePrismaError(err);
+    throw err;
   }
 };
 
-const getUserOrders = async (userId: number) => {
+const getUserOrders = async (userId: number): Promise<Order[]> => {
   try {
     const orders = await prisma.order.findMany({
       where: { userId },
@@ -50,6 +52,7 @@ const getUserOrders = async (userId: number) => {
     return orders;
   } catch (err) {
     handlePrismaError(err);
+    throw err;
   }
 };
 

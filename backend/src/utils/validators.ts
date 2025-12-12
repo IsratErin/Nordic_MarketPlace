@@ -55,7 +55,28 @@ const orderSchema = z.object({
   id: z.number().int().positive(),
   userId: z.number().int().positive(),
   status: orderStatusEnum,
-  // Timestamps
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  items: z.array(
+    z.object({
+      id: z.number().int().positive(),
+      orderId: z.number().int().positive(),
+      productId: z.number().int().positive(),
+      quantity: z.number().int().positive(),
+      price: z.number().nonnegative(),
+    }),
+  ),
+  user: z.object({
+    id: z.number().int().positive(),
+    name: z.string().min(2).max(100).nullable(),
+    email: z.string().email().max(255).min(5),
+    address: z
+      .string()
+      .max(255)
+      .nullable()
+      .optional()
+      .transform((v) => v ?? null),
+  }),
 });
 
 const orderItemSchema = z.object({
