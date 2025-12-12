@@ -2,10 +2,15 @@ import { z } from 'zod';
 
 const userSchema = z.object({
   id: z.number().int().positive(),
-  name: z.string().min(2).max(100),
+  name: z.string().min(2).max(100).nullable(),
   email: z.string().email().max(255).min(5),
-  role: z.enum(['ADMIN', 'USER', 'GUEST']),
-  address: z.string().max(255).optional(),
+  role: z.enum(['USER', 'ADMIN']),
+  address: z
+    .string()
+    .max(255)
+    .nullable()
+    .optional()
+    .transform((v) => v ?? null),
   // Timestamps
 });
 const updateUserSchema = z
