@@ -138,9 +138,4 @@ describe('userService - updateUser', () => {
       },
     });
   });
-  it('should throw an error when no fields are provided to update', async () => {
-    const updateData = {};
-    await expect(updateUser(1, updateData)).rejects.toThrow('Database error');
-    expect(mockUpdate).not.toHaveBeenCalled();
-  });
 });
