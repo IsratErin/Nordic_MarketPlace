@@ -16,12 +16,18 @@ jest.unstable_mockModule('../../prisma/client.js', () => ({
  * Dynamic imports after mocking
  * - Ensures the imported Prisma client and userService is the mocked version
  */
-const { getUser } = await import('../../src/services/userService.js');
+const { getUser, updateUser, allUsers } = await import('../../src/services/userService.js');
 const { default: prisma } = await import('../../prisma/client.js');
 
 // Type assertion for better type safety in tests
 const mockFindUnique = prisma.user.findUnique as unknown as jest.MockedFunction<
   (args: any) => Promise<User | null>
+>;
+const mockFindMany = prisma.user.findMany as unknown as jest.MockedFunction<
+  (args: any) => Promise<User[]>
+>;
+const mockUpdate = prisma.user.update as unknown as jest.MockedFunction<
+  (args: any) => Promise<User>
 >;
 
 describe('userService - getUser', () => {
@@ -36,7 +42,6 @@ describe('userService - getUser', () => {
       email: 'john@example.com',
       address: '123 Main St',
       role: 'USER',
-      //createdAt: new Date('2025-01-01'),
     };
     mockFindUnique.mockResolvedValue(mockUser);
     const result = await getUser(1);
@@ -50,7 +55,6 @@ describe('userService - getUser', () => {
         email: true,
         address: true,
         role: true,
-        //createdAt: true,
       },
     });
   });
@@ -60,5 +64,83 @@ describe('userService - getUser', () => {
     const result = await getUser(999);
     expect(result).toBeNull();
     expect(mockFindUnique).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('userService - allUsers', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should return all users', async () => {
+    const mockUsersAll: User[] = [
+      {
+        id: 1,
+        name: 'israt',
+        email: 'israt123@gmail.com',
+        address: 'Stockholm',
+        role: 'USER',
+      },
+      {
+        id: 2,
+        name: 'Alina',
+        email: 'alina@example.com',
+        address: 'Gothenburg',
+        role: 'USER',
+      },
+    ];
+
+    mockFindMany.mockResolvedValue(mockUsersAll);
+    const result = await allUsers();
+    expect(result).toEqual(mockUsersAll);
+    expect(mockFindMany).toHaveBeenCalledTimes(1);
+    expect(mockFindMany).toHaveBeenCalledWith({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        address: true,
+        role: true,
+        createdAt: true,
+      },
+    });
+  });
+});
+
+describe('userService - updateUser', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should update and return the user', async () => {
+    const mockUpdatedUser: User = {
+      id: 1,
+      name: 'Jane Danne',
+      email: 'jane@gmail.com',
+      address: 'Kista',
+      role: 'USER',
+    };
+
+    mockUpdate.mockResolvedValue(mockUpdatedUser);
+    const updateData = { name: 'Jane Danne', address: 'Kista updated' };
+    const result = await updateUser(1, updateData);
+    expect(result).toEqual(mockUpdatedUser);
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
+    expect(mockUpdate).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: updateData,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        address: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  });
+  it('should throw an error when no fields are provided to update', async () => {
+    const updateData = {};
+    await expect(updateUser(1, updateData)).rejects.toThrow('Database error');
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });
