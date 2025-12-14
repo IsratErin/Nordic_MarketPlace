@@ -38,3 +38,41 @@ Without validation, bad data could: Crash the server, Corrupt the database, Crea
 # When using exactOptionalPropertyTypes: true in TypeScript,
 - we must filter out undefined values from partial update info objects before passing them to Prisma.
 - because Zod's .partial() creates T | undefined types, and prisma doesn’t acceppt poperties as undefined.
+
+
+###########____Testing_____#######
+
+#UNIT TESTING CHECKLIST (Best Practice)
+
+-Test only ONE thing at a time:
+Test business logic, One function at a time
+Don’t test routes, Don’t test database
+
+- Do Not use real database
+Never connect to Prisma DB in unit tests, Always mock Prisma
+Why? -- Tests stay fast, Tests don’t break because of DB issues
+
+-Clear test structure:
+Use this pattern in every test: Arrange → Act → Assert
+Arrange → prepare data & mocks
+Act → call the function
+Assert → check result
+
+-Test success AND failure:
+Always test: Valid input, Invalid input, ### Edge cases (empty, null, undefined)
+
+-No shared state between tests:
+Tests should not depend on each other, ## Reset mocks after each test
+
+## "ESM" UNIT TEST CHECKLIST :Before every project:
+"type": "module" in package.json
+Jest config uses default-esm
+.js extensions in imports
+No real DB connections
+**Mocks declared and implented before importing the modules from their relative folders
+#jest.unstable_mockModule is Required for ESM (not jest.mock()) and Without this, Prisma is imported before being mocked
+- need await before imports to Ensure the mock is registered before module evaluation
+- need Dynamic import() to guarantee that  we receive the mocked Prisma client. Static imports would lock in the real implementation
+- jest.fn() inside the factory to ensure .mockResolvedValue() exists at runtime as Casting alone is not enough
+- type never error solved by using unknown as jest.MockedFunction
+ 
