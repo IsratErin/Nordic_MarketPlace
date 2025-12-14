@@ -16,7 +16,7 @@ const getUser = async (userId: number): Promise<User | null> => {
         email: true,
         address: true,
         role: true,
-        createdAt: true,
+        //createdAt: true,
       },
     });
     return user;
