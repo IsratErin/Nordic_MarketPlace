@@ -1,15 +1,18 @@
+import dotenv from 'dotenv';
+
+// Load .env.test and override any existing environment variables
+dotenv.config({ path: '.env.test', override: true });
+
 export default {
   preset: 'ts-jest/presets/default-esm',
-  testEnvironment: 'node',
-  testMatch: ['**/*.integration.test.ts'],
+  testMatch: ['**/*.int.test.ts'],
   extensionsToTreatAsEsm: ['.ts'],
+  testEnvironment: 'node',
   maxWorkers: 1,
-  clearMocks: true,
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1', // Fix ESM relative imports
+    '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  transform: {
-    '^.+\\.ts$': ['ts-jest', { useESM: true }],
-  },
+  clearMocks: true,
   testTimeout: 30000,
 };
