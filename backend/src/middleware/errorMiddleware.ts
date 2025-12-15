@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { ApiError } from '../utils/apiError.js';
 import logger from '../logger.js';
+import { stat } from 'fs';
 
 export type error = {
   statusCode?: number;
@@ -31,6 +32,7 @@ export const errorMiddleware = (
         path: e.path.join('.'),
         message: e.message,
       })),
+      statusCode: 400,
     });
   }
 
@@ -62,17 +64,19 @@ export const errorMiddleware = (
     }
 
     // Generic Prisma error fallback
+    /*
     return res.status(400).json({
       status: 'fail',
       message: 'Database error',
       code: err.code,
       meta: err.meta || null,
-    });
+    }); */
   }
 
   // unhandled errors or unknown errors
   return res.status(500).json({
     status: 'error',
     message: err.message || 'Internal Server Error',
+    statusCode: err.statusCode || 500,
   });
 };

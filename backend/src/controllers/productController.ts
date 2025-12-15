@@ -25,6 +25,7 @@ const getProductInfo = async (req: Request, res: Response, next: NextFunction) =
     );
     res.json({ product: validatedProduct });
   } catch (err) {
+    //console.log(`Error in getProductInfo: ${err}`);
     next(err);
   }
 };

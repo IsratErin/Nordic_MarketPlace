@@ -2,21 +2,37 @@ import { Prisma } from '@prisma/client';
 import { ApiError } from './apiError.js';
 
 export const handlePrismaError = (err: unknown): never => {
+  // Domain errors must pass through untouched and go through the error middleware as ApiErrors
+  if (err instanceof ApiError) {
+    throw err;
+  }
+
+  // Known Prisma request errors
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {
       case 'P2002':
-        throw ApiError.badRequest('Unique constraint violation', { target: err.meta?.target });
+        throw ApiError.badRequest('Unique constraint violation', {
+          target: err.meta?.target,
+        });
+
       case 'P2025':
-        throw ApiError.notFound('Record not found');
+        throw ApiError.notFound('Product not found');
+
       default:
-        throw ApiError.internal(`Prisma error: ${err.message}`, { code: err.code, meta: err.meta });
+        throw ApiError.internal('Prisma error', {
+          code: err.code,
+          meta: err.meta,
+        });
     }
   }
 
+  // Prisma validation errors
   if (err instanceof Prisma.PrismaClientValidationError) {
-    throw ApiError.badRequest(`Validation error: ${err.message}`);
+    throw ApiError.badRequest('Database validation error', {
+      message: err.message,
+    });
   }
 
-  console.error('Unexpected error:', err);
-  throw ApiError.internal('Database error');
+  //Unknown error
+  throw err;
 };

@@ -1,3 +1,4 @@
+import { error } from 'console';
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 import { handlePrismaError } from '../utils/prismaError.js';
@@ -45,7 +46,7 @@ const getProductInfo = async (productId: number) => {
       },
     });
     if (!product) {
-      throw ApiError.notFound('Product not found');
+      throw ApiError.notFound(`Product not found`);
     }
     return product;
   } catch (err) {
@@ -66,6 +67,9 @@ const getProductsByCategory = async (catId: number) => {
         category: true,
       },
     });
+    if (products.length === 0) {
+      throw ApiError.notFound(`Product not found`);
+    }
     return products;
   } catch (err) {
     handlePrismaError(err);

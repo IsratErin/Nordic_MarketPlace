@@ -76,3 +76,18 @@ No real DB connections
 - jest.fn() inside the factory to ensure .mockResolvedValue() exists at runtime as Casting alone is not enough
 - type never error solved by using unknown as jest.MockedFunction
  
+
+ ## Integration Test
+ - should involve real DB but test DB and not production/dev DB
+ - in Integration tests don’t reuse the same PrismaClient instance between different test runs or different environments, 
+ because it can: Keep old DB connections, Point to the wrong database, Cause flaky or hanging tests
+ - Create Prisma client normally (once per process):
+ #While creating test_db we should not use VOLUMES (used for Database files to live outside the container even if container recreated/destroyed) in .yml files. because we don't need to persists data during integration tests.
+Integration-test flow:
+1. Start test DB (Docker) : "db:test:up" - empty
+2. Apply Prisma migrations :  "db:test:migrate" - table created
+3. Run integration tests :"db:test:int" - data inserted + tested
+4. Stop & remove test DB: "db:test:down" - DB destroyed
+
+** Never pass a domain error (ApiError) into a database error handler
+

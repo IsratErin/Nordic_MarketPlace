@@ -12,12 +12,17 @@ jest.unstable_mockModule('../../prisma/client.js', () => ({
   },
 }));
 
+jest.unstable_mockModule('../../src/utils/prismaError.js', () => ({
+  handlePrismaError: jest.fn(),
+}));
+
 /**
  * Dynamic imports after mocking
  * - Ensures the imported Prisma client and userService is the mocked version
  */
 const { getUser, updateUser, allUsers } = await import('../../src/services/userService.js');
 const { default: prisma } = await import('../../prisma/client.js');
+const { handlePrismaError } = await import('../../src/utils/prismaError.js');
 
 // Type assertion for better type safety in tests
 const mockFindUnique = prisma.user.findUnique as unknown as jest.MockedFunction<
@@ -64,6 +69,15 @@ describe('userService - getUser', () => {
     const result = await getUser(999);
     expect(result).toBeNull();
     expect(mockFindUnique).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle prisma error when findUnique throws', async () => {
+    const prismaError = new Error(`Unreachable`);
+    mockFindUnique.mockRejectedValue(prismaError);
+
+    await expect(getUser(1)).rejects.toThrow(`Unreachable`);
+
+    expect(handlePrismaError).toHaveBeenCalledWith(prismaError);
   });
 });
 
@@ -137,5 +151,11 @@ describe('userService - updateUser', () => {
         updatedAt: true,
       },
     });
+  });
+  it('should throw error when no fields are provided to update', async () => {
+    const prismaError = new Error(`Unreachable`); // unreachable for now
+    await expect(updateUser(1, {})).rejects.toThrow(prismaError);
+
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });
