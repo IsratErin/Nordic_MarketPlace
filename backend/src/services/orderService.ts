@@ -1,4 +1,5 @@
 import prisma from '../../prisma/client.js';
+import { ApiError } from '../utils/apiError.js';
 import { handlePrismaError } from '../utils/prismaError.js';
 import type { Order } from '../utils/types.js';
 
@@ -36,6 +37,9 @@ const getOrderInfo = async (orderId: number): Promise<Order | null> => {
       where: { id: orderId },
       include: { items: true, user: true },
     });
+    if (!order) {
+      throw ApiError.notFound('Order not found');
+    }
     return order;
   } catch (err) {
     handlePrismaError(err);

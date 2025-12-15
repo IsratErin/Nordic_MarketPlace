@@ -1,15 +1,15 @@
-import prisma from '../../prisma/client.js'; // Use the shared or test-specific Prisma client
+import prismaTestClient from '../prismaTestClient.js'; // Use the shared or test-specific Prisma client
 import app from '../../src/app.js';
 import request from 'supertest';
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
 
 describe('User Routes Integration Tests', () => {
   beforeAll(async () => {
-    await prisma.$connect();
-    await prisma.user.deleteMany();
+    await prismaTestClient.$connect();
+    await prismaTestClient.user.deleteMany();
 
     // Seed test users
-    await prisma.user.createMany({
+    await prismaTestClient.user.createMany({
       data: [
         {
           name: 'test user 1',
@@ -30,8 +30,8 @@ describe('User Routes Integration Tests', () => {
   });
 
   afterAll(async () => {
-    await prisma.user.deleteMany();
-    await prisma.$disconnect();
+    await prismaTestClient.user.deleteMany();
+    await prismaTestClient.$disconnect();
   });
 
   it('GET /users/allUsers - should return all users', async () => {
@@ -64,7 +64,7 @@ describe('User Routes Integration Tests', () => {
   });
 
   it('GET /users/:id - should return a user by ID', async () => {
-    const users = await prisma.user.findMany();
+    const users = await prismaTestClient.user.findMany();
     const userId = users[0]?.id; // Ensure the user exists
 
     const response = await request(app).get(`/users/${userId}`);
@@ -96,7 +96,7 @@ describe('User Routes Integration Tests', () => {
   });
 
   it('PATCH /users/:id - should update a user by ID', async () => {
-    const users = await prisma.user.findMany();
+    const users = await prismaTestClient.user.findMany();
     const userId = users[0]?.id; // Ensure the user exists
 
     const updateData = {

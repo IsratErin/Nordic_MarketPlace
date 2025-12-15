@@ -1,26 +1,23 @@
-import prisma from '../../prisma/client.js';
+import prismaTestClient from '../prismaTestClient.js';
 import app from '../../src/app.js';
 import request from 'supertest';
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
-import { ca } from 'zod/locales';
-import { create } from 'domain';
 
 describe('Product Routes Integration Tests', () => {
   beforeAll(async () => {
-    await prisma.$connect();
-    await prisma.orderItem.deleteMany();
-    await prisma.order.deleteMany();
-    await prisma.product.deleteMany();
-    await prisma.category.deleteMany();
-
+    await prismaTestClient.$connect();
+    await prismaTestClient.orderItem.deleteMany();
+    await prismaTestClient.order.deleteMany();
+    await prismaTestClient.product.deleteMany();
+    await prismaTestClient.category.deleteMany();
     // Seed test categories and products
-    const category = await prisma.category.create({
+    const category = await prismaTestClient.category.create({
       data: {
         name: 'Electronics',
       },
     });
 
-    await prisma.product.createMany({
+    await prismaTestClient.product.createMany({
       data: [
         {
           name: 'Laptop',
@@ -41,11 +38,11 @@ describe('Product Routes Integration Tests', () => {
   });
 
   afterAll(async () => {
-    await prisma.orderItem.deleteMany();
-    await prisma.order.deleteMany();
-    await prisma.product.deleteMany();
-    await prisma.category.deleteMany();
-    await prisma.$disconnect();
+    await prismaTestClient.orderItem.deleteMany();
+    await prismaTestClient.order.deleteMany();
+    await prismaTestClient.product.deleteMany();
+    await prismaTestClient.category.deleteMany();
+    await prismaTestClient.$disconnect();
   });
 
   it('GET /products - should return all products', async () => {
@@ -83,7 +80,7 @@ describe('Product Routes Integration Tests', () => {
   });
 
   it('GET /products/:id - should return product details by ID', async () => {
-    const products = await prisma.product.findMany();
+    const products = await prismaTestClient.product.findMany();
     const productId = products[0]?.id;
 
     const response = await request(app).get(`/products/${productId}`);
@@ -119,7 +116,7 @@ describe('Product Routes Integration Tests', () => {
   });
 
   it('POST /products/admin/addproduct - should add a new product', async () => {
-    const category = await prisma.category.findFirst({ where: { name: 'Electronics' } });
+    const category = await prismaTestClient.category.findFirst({ where: { name: 'Electronics' } });
     const newProduct = {
       name: 'Tablet',
       description: 'A lightweight tablet',
@@ -144,16 +141,16 @@ describe('Product Routes Integration Tests', () => {
     );
 
     // Verify the product was added
-    const addedProduct = await prisma.product.findUnique({
+    const addedProduct = await prismaTestClient.product.findUnique({
       where: { id: response.body.newProduct.id },
     });
     expect(addedProduct).not.toBeNull();
   });
 
   it('PATCH /products/admin/updateproduct/:id - should update a product by ID', async () => {
-    const product = await prisma.product.findFirst({ where: { name: 'Laptop' } });
+    const product = await prismaTestClient.product.findFirst({ where: { name: 'Laptop' } });
     const productId = product?.id;
-    const category = await prisma.category.findFirst({ where: { name: 'Electronics' } });
+    const category = await prismaTestClient.category.findFirst({ where: { name: 'Electronics' } });
     const categoryId = category?.id;
     console.log('Updating product with ID:', productId);
     const updateData = {
@@ -191,7 +188,7 @@ describe('Product Routes Integration Tests', () => {
   });
 
   it('DELETE /products/admin/deleteproduct/:id - should delete a product by ID', async () => {
-    const products = await prisma.product.findMany();
+    const products = await prismaTestClient.product.findMany();
     const productId = products[0]?.id;
 
     const response = await request(app).delete(`/products/admin/deleteproduct/${productId}`);
