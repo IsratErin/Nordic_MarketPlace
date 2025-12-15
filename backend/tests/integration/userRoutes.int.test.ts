@@ -1,4 +1,4 @@
-import prisma from '../../prisma/client.js';
+import prisma from '../prismaTestClient.js'; // Using the test-specific client
 import app from '../../src/app.js';
 import request from 'supertest';
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
