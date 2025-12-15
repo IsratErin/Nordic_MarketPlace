@@ -89,3 +89,5 @@ Integration-test flow:
 3. Run integration tests :"db:test:int" - data inserted + tested
 4. Stop & remove test DB: "db:test:down" - DB destroyed
 
+** Never pass a domain error (ApiError) into a database error handler
+

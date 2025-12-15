@@ -126,7 +126,7 @@ describe('User Routes Integration Tests', () => {
     expect(response.status).toBe(404);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: 'Record not found',
+        message: 'Product not found',
         status: 'fail',
       }),
     );

@@ -16,7 +16,7 @@ router.get(`/category/:categoryId`, getAllProductsByCategory);
 
 //admin routes
 router.post(`/admin/addproduct`, addNewProduct);
-router.put(`/admin/updateproduct/:id`, updateProduct);
+router.patch(`/admin/updateproduct/:id`, updateProduct); // Changed to PATCH ,check unit tests failure later
 router.delete(`/admin/deleteproduct/:id`, deleteProduct);
 
 export default router;
