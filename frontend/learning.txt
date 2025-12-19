@@ -1,0 +1,23 @@
+Redux is a library for managing global application state.
+In Redux : 
+There is a method called dispatch. The only way to update the state is to call store.dispatch() and pass in an action object.
+Dispatching actions is like "triggering an event" in the application and Reducers act like event listeners, 
+and when they hear an action they are interested in, they update the state in response.
+
+##Redux's update pattern separates "what happened" from "how the state changes"
+-Actions are plain objects with a type field, and describe "what happened" in the app
+-Reducers are functions that calculate a new state value based on previous state + an action
+-A Redux store runs the root reducer whenever an action is dispatched
+
+##Redux uses a "one-way data flow" app structure
+-State describes the condition of the app at a point in time, and UI renders based on that state
+When something happens in the app:
+-The UI dispatches an action
+-The store runs the reducers, and the state is updated based on what occurred
+-The store notifies the UI that the state has changed
+-The UI re-renders based on the new state
+
+
+##React stuffs
+Lazy loaded Pages are used for better performance:
+Pages are loaded only when the route is visited, Reduces initial bundle size, Faster first page load
