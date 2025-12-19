@@ -16,3 +16,8 @@ When something happens in the app:
 -The store runs the reducers, and the state is updated based on what occurred
 -The store notifies the UI that the state has changed
 -The UI re-renders based on the new state
+
+
+##React stuffs
+Lazy loaded Pages are used for better performance:
+Pages are loaded only when the route is visited, Reduces initial bundle size, Faster first page load
