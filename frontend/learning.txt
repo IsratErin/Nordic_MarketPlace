@@ -21,3 +21,16 @@ When something happens in the app:
 ##React stuffs
 Lazy loaded Pages are used for better performance:
 Pages are loaded only when the route is visited, Reduces initial bundle size, Faster first page load
+
+## React Redux
+Characteristics of reducers
+-Synchronous
+-Action creators are auto-generated
+-Used for local, slice-owned actions
+
+Redux Toolkit enforces this separation:
+-Async logic → thunks
+-State updates for thunks → extraReducers
+
+Naming Convention in asyncThunks:
+"products/fetchAll" is a example Redux action identifier and it describes what the state is doing, not which API endpoint is called. It is a Redux Thunk naming convention.
