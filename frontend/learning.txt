@@ -31,3 +31,6 @@ Characteristics of reducers
 Redux Toolkit enforces this separation:
 -Async logic → thunks
 -State updates for thunks → extraReducers
+
+Naming Convention in asyncThunks:
+"products/fetchAll" is a example Redux action identifier and it describes what the state is doing, not which API endpoint is called. It is a Redux Thunk naming convention.
