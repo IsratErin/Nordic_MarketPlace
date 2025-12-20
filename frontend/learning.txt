@@ -34,3 +34,5 @@ Redux Toolkit enforces this separation:
 
 Naming Convention in asyncThunks:
 "products/fetchAll" is a example Redux action identifier and it describes what the state is doing, not which API endpoint is called. It is a Redux Thunk naming convention.
+
+Redux is best for managing global state shared across multiple components or pages. For simple, temporary, or component-specific state (like form inputs), React's local state is more efficient and avoids unnecessary complexity.
