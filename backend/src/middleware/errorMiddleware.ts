@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { ApiError } from '../utils/apiError.js';
 import logger from '../logger.js';
-import { stat } from 'fs';
 
 export type error = {
   statusCode?: number;

@@ -5,6 +5,8 @@ import {
   productSchema,
   updateUserSchema,
   orderSchema,
+  registerSchema,
+  loginSchema,
 } from './validators.js';
 
 export type User = z.infer<typeof userSchema>;
@@ -12,6 +14,8 @@ export type UpdateUserInfo = z.infer<typeof updateUserSchema>;
 export type NewProductInfo = z.infer<typeof newProductSchema>;
 export type Product = z.infer<typeof productSchema>;
 export type Order = z.infer<typeof orderSchema>;
+export type RegisterUserInput = z.infer<typeof registerSchema>;
+export type LoginUserInput = z.infer<typeof loginSchema>;
 
 // Utility type to remove: undefined properties from an object
 export function removeUndefined<T extends Record<string, unknown>>(

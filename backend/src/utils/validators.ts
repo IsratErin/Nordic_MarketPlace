@@ -84,6 +84,25 @@ const orderItemSchema = z.object({
   quantity: z.number().int().positive(),
   price: z.number().nonnegative(),
 });
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  name: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((v) => v ?? null),
+  address: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((v) => v ?? null),
+});
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
 
 export {
   userSchema,
@@ -93,4 +112,6 @@ export {
   orderStatusEnum,
   orderItemSchema,
   updateUserSchema,
+  registerSchema,
+  loginSchema,
 };
