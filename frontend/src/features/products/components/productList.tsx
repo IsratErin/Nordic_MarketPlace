@@ -7,15 +7,13 @@ interface ProductListProps {
   products: Product[];
   loading?: boolean;
   error?: string | null;
-  onProductClick?: (productId: string | number) => void;
-  onAddToCart?: (productId: string | number) => void;
+  onAddToCart?: (productId: Product["id"]) => void;
 }
 
 export const ProductList: React.FC<ProductListProps> = ({
   products,
   loading = false,
   error = null,
-  onProductClick,
   onAddToCart,
 }) => {
   // Loading state
@@ -67,14 +65,13 @@ export const ProductList: React.FC<ProductListProps> = ({
     );
   }
 
-  // Product grid - responsive with better spacing
+  // Product grid
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
       {products.map((product) => (
         <ProductCard
           key={product.id}
           product={product}
-          onClick={onProductClick}
           onAddToCart={onAddToCart}
         />
       ))}
