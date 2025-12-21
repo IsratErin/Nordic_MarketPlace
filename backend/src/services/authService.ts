@@ -28,7 +28,7 @@ const registerUser = async (data: RegisterUserInput): Promise<AuthResult['user']
         password: await hashPassword(data.password),
         name: data.name,
         address: data.address,
-        role: 'USER',
+        role: data.role ?? 'USER',
       },
     });
     const { password: _, ...safeUser } = user;

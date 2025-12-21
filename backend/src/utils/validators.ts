@@ -97,6 +97,7 @@ const registerSchema = z.object({
     .nullable()
     .optional()
     .transform((v) => v ?? null),
+  role: z.enum(['USER', 'ADMIN']).optional(),
 });
 
 const loginSchema = z.object({

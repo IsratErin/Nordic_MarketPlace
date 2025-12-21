@@ -2,12 +2,14 @@ import jwt from 'jsonwebtoken';
 import type { SignOptions } from 'jsonwebtoken';
 import { Role } from '@prisma/client';
 
-export interface JwtPayload {
+interface JwtPayload {
   userId: number;
   role: Role;
 }
 
-export const signAccessToken = (payload: JwtPayload) => {
+export type JwtPayloadType = JwtPayload;
+
+const signAccessToken = (payload: JwtPayload) => {
   const secret = process.env.JWT_ACCESS_SECRET;
   const expiresIn = process.env.JWT_ACCESS_EXPIRES_IN as SignOptions['expiresIn'];
 
@@ -18,7 +20,7 @@ export const signAccessToken = (payload: JwtPayload) => {
   return jwt.sign(payload, secret, { expiresIn });
 };
 
-export const signRefreshToken = (payload: { userId: number }) => {
+const signRefreshToken = (payload: { userId: number }) => {
   const secret = process.env.JWT_REFRESH_SECRET;
   const expiresIn = process.env.JWT_REFRESH_EXPIRES_IN as SignOptions['expiresIn'];
 
@@ -28,3 +30,5 @@ export const signRefreshToken = (payload: { userId: number }) => {
 
   return jwt.sign(payload, secret, { expiresIn });
 };
+
+export { signAccessToken, signRefreshToken };
