@@ -78,7 +78,7 @@ export interface ProductState {
   };
 }
 
-// Filter/Query types
+// Filter types
 export interface ProductFilters {
   categoryId?: number;
   minPrice?: number;
