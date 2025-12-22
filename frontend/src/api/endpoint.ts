@@ -1,4 +1,10 @@
 export const API_ENDPOINT = {
+  AUTH: {
+    Login: "/auth/login",
+    Register: "/auth/register",
+    Refresh: "/auth/refresh",
+    Logout: "/auth/logout",
+  },
   PRODUCTS: {
     All_Product_List: "/products",
     Product_Detail: (id: number) => `/products/${id}`,
