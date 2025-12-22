@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { ApiError } from '../utils/apiError.js';
 import logger from '../logger.js';
-import { stat } from 'fs';
 
 export type error = {
   statusCode?: number;
@@ -73,6 +72,27 @@ export const errorMiddleware = (
     }); */
   }
 
+  //authentication errors
+  if (err.message === 'Unauthorized') {
+    return res.status(401).json({
+      status: 'fail',
+      message: 'Unauthorized',
+    });
+  }
+  // user registration error for existing email
+  if (err.message === 'Email already in use') {
+    return res.status(409).json({
+      status: 'fail',
+      message: 'Email already in use',
+    });
+  }
+  //other auth errors
+  if (err.message === 'Invalid email or password') {
+    return res.status(401).json({
+      status: 'fail',
+      message: 'Invalid email or password',
+    });
+  }
   // unhandled errors or unknown errors
   return res.status(500).json({
     status: 'error',

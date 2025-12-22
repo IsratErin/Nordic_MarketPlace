@@ -1,4 +1,3 @@
-import { error } from 'console';
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 import { handlePrismaError } from '../utils/prismaError.js';
