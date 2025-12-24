@@ -6,5 +6,9 @@ export function useAuth() {
     (state: RootState) => state.auth
   );
   const isAdmin = user?.role === "ADMIN";
+
+  console.log("useAuth - user:", user);
+  console.log("useAuth - isAdmin:", isAdmin);
+
   return { user, isAuthenticated, isAdmin };
 }

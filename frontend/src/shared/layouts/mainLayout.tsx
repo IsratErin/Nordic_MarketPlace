@@ -15,7 +15,7 @@ export default function MainLayout() {
               <div className="flex items-center gap-3">
                 {/* User Account */}
                 <Link
-                  to="/myprofile"
+                  to="/register"
                   className="p-2 rounded-md hover:bg-gray-100 transition"
                   aria-label="Account"
                 >

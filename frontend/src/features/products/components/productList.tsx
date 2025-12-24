@@ -8,6 +8,9 @@ interface ProductListProps {
   loading?: boolean;
   error?: string | null;
   onAddToCart?: (productId: Product["id"]) => void;
+  onEdit?: (product: Product) => void;
+  onDelete?: (productId: Product["id"]) => void;
+  isAdmin?: boolean;
 }
 
 export const ProductList: React.FC<ProductListProps> = ({
@@ -15,6 +18,9 @@ export const ProductList: React.FC<ProductListProps> = ({
   loading = false,
   error = null,
   onAddToCart,
+  onEdit,
+  onDelete,
+  isAdmin = false,
 }) => {
   // Loading state
   if (loading) {
@@ -73,6 +79,9 @@ export const ProductList: React.FC<ProductListProps> = ({
           key={product.id}
           product={product}
           onAddToCart={onAddToCart}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          isAdmin={isAdmin}
         />
       ))}
     </div>

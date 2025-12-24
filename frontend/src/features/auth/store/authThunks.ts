@@ -39,6 +39,7 @@ const loginUser = createAsyncThunk<
   try {
     const response = await authService.login(credentials);
     // Just store access token in Redux (ignore refresh token for now)
+    console.log("Login response:", response);
     return {
       user: response.user,
       accessToken: response.accessToken,
