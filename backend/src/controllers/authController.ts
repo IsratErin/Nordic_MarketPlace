@@ -29,7 +29,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         secure: true,
         sameSite: 'strict',
       })
-      .json({ loggedInUser: user, accessToken: accessToken });
+      .json({ user: user, accessToken: accessToken });
   } catch (err) {
     next(err);
   }

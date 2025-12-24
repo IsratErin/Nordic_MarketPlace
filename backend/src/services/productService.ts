@@ -1,7 +1,7 @@
 import prisma from '../../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 import { handlePrismaError } from '../utils/prismaError.js';
-import type { Product, NewProductInfo } from '../utils/types.js';
+import type { Product, NewProductInfo, UpdateProductInfo } from '../utils/types.js';
 
 /*type newProductInfo = {
   name: string;
@@ -86,7 +86,7 @@ const addNewProduct = async (productInfo: NewProductInfo) => {
   }
 };
 
-const updateProductInfo = async (productId: number, updateData: NewProductInfo) => {
+const updateProductInfo = async (productId: number, updateData: UpdateProductInfo) => {
   try {
     const updatedProduct = await prisma.product.update({
       where: { id: productId },
