@@ -1,4 +1,4 @@
-import prisma from '../../prisma/client.js';
+import prisma from '../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 import { handlePrismaError } from '../utils/prismaError.js';
 import type { Product, NewProductInfo, UpdateProductInfo } from '../utils/types.js';

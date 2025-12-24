@@ -24,7 +24,7 @@ export const EditProductModal = ({
     description: product.description || "",
     price: product.price,
     stock: product.stock,
-    categoryId: product.categoryId,
+    categoryId: product.category.id,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

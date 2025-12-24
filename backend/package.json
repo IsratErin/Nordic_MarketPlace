@@ -4,6 +4,8 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
     "dev": "nodemon --ext ts,js,json --exec tsx src/server.ts",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
@@ -34,7 +36,6 @@
     "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.48.1",
     "cross-env": "^10.1.0",
-    "dotenv": "^17.2.3",
     "dotenv-cli": "^11.0.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
@@ -59,6 +60,7 @@
     "jsonwebtoken": "^9.0.3",
     "prisma": "^6.19.0",
     "winston": "^3.18.3",
-    "zod": "^4.1.13"
+    "zod": "^4.1.13",
+    "dotenv": "^17.2.3"
   }
 }

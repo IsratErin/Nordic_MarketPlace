@@ -91,3 +91,7 @@ Integration-test flow:
 
 ** Never pass a domain error (ApiError) into a database error handler
 
+## While using Docker:
+We remove dev-only tools (eslint, tests, nodemon, jest, etc.) because a production container should only contain what is required to run the application—nothing more.
+This improves: Security, Performance, Image size, Reliability,Operational clarity
+

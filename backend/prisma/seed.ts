@@ -1,91 +1,128 @@
-import { PrismaClient } from '@prisma/client';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const prisma = new PrismaClient();
+import prisma from '../src/prisma/client.js';
+import bcrypt from 'bcrypt';
 
 async function main() {
-  // Delete existing data to avoid duplicates
-  await prisma.orderItem.deleteMany();
-  await prisma.order.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.user.deleteMany();
+  console.log('Seeding database...');
 
-  console.log('Existing data deleted!');
+  // --- Categories
+  const categories = ['Electronics', 'Books', 'Clothing', 'Home', 'Toys'];
 
-  // Seed Users
-  const users = await prisma.user.createMany({
-    data: [
-      { email: 'israt@example.com', password: 'password1', name: 'Israt', role: 'USER' },
-      { email: 'nayeem@example.com', password: 'password2', name: 'Nayeem', role: 'USER' },
-      { email: 'sophia@example.com', password: 'password3', name: 'Sophia', role: 'USER' },
-      { email: 'emilie@example.com', password: 'adminpassword1', name: 'Emilie', role: 'ADMIN' },
-      { email: 'admin@example.com', password: 'adminpassword2', name: 'Admin', role: 'ADMIN' },
-    ],
-  });
-
-  console.log('Users seeded!');
-  //categories
-  const categories = await prisma.category.createMany({
-    data: [
-      { name: 'Electronics' },
-      { name: 'Books' },
-      { name: 'Clothing' },
-      { name: 'Home & Kitchen' },
-      { name: 'Sports & Outdoors' },
-    ],
-  });
-
+  for (const name of categories) {
+    await prisma.category.upsert({
+      where: { name },
+      update: {}, // do nothing if already exists
+      create: { name },
+    });
+  }
   console.log('Categories seeded!');
 
-  // Seed Products
-  const products = await prisma.product.createMany({
-    data: [
-      { name: 'Laptop', description: 'High-performance laptop', price: 1500, stock: 10 },
-      { name: 'Smartphone', description: 'Latest smartphone', price: 800, stock: 20 },
-      { name: 'Headphones', description: 'Noise-cancelling headphones', price: 200, stock: 15 },
-      { name: 'Smartwatch', description: 'Feature-packed smartwatch', price: 300, stock: 25 },
-      { name: 'Tablet', description: 'Lightweight and powerful tablet', price: 600, stock: 12 },
-    ],
-  });
+  // --- Users ---
+  const users = [
+    { email: 'admin@example.com', password: 'password123' },
+    { email: 'alice@example.com', password: 'alice123' },
+    { email: 'bob@example.com', password: 'bob123' },
+    { email: 'carol@example.com', password: 'carol123' },
+    { email: 'dave@example.com', password: 'dave123' },
+  ];
 
+  for (const user of users) {
+    const existing = await prisma.user.findUnique({ where: { email: user.email } });
+    if (!existing) {
+      await prisma.user.create({
+        data: {
+          email: user.email,
+          password: await bcrypt.hash(user.password, Number(process.env.BCRYPT_SALT_ROUNDS) || 10),
+        },
+      });
+    }
+  }
+  console.log('Users seeded!');
+
+  // --- Products ---
+  const products = [
+    {
+      name: 'Laptop',
+      description: 'High-end laptop',
+      price: 1200,
+      stock: 10,
+      categoryName: 'Electronics',
+    },
+    {
+      name: 'Smartphone',
+      description: 'Latest smartphone',
+      price: 800,
+      stock: 20,
+      categoryName: 'Electronics',
+    },
+    { name: 'Novel', description: 'Interesting book', price: 15, stock: 50, categoryName: 'Books' },
+    {
+      name: 'T-Shirt',
+      description: 'Cotton t-shirt',
+      price: 20,
+      stock: 100,
+      categoryName: 'Clothing',
+    },
+    {
+      name: 'Sofa',
+      description: 'Comfortable home sofa',
+      price: 500,
+      stock: 5,
+      categoryName: 'Home',
+    },
+    {
+      name: 'Action Figure',
+      description: 'Toy for kids',
+      price: 25,
+      stock: 30,
+      categoryName: 'Toys',
+    },
+    {
+      name: 'Board Game',
+      description: 'Fun family game',
+      price: 40,
+      stock: 20,
+      categoryName: 'Toys',
+    },
+    {
+      name: 'Coffee Table',
+      description: 'Wooden table',
+      price: 150,
+      stock: 7,
+      categoryName: 'Home',
+    },
+    { name: 'Jeans', description: 'Denim pants', price: 45, stock: 50, categoryName: 'Clothing' },
+    {
+      name: 'Textbook',
+      description: 'Educational book',
+      price: 60,
+      stock: 25,
+      categoryName: 'Books',
+    },
+  ];
+
+  for (const product of products) {
+    const category = await prisma.category.findUnique({ where: { name: product.categoryName } });
+    if (!category) continue;
+
+    const existing = await prisma.product.findFirst({ where: { name: product.name } });
+    if (!existing) {
+      await prisma.product.create({
+        data: {
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          stock: product.stock,
+          categoryId: category.id,
+        },
+      });
+    }
+  }
   console.log('Products seeded!');
-
-  // Seed Orders
-  const orders = await prisma.order.createMany({
-    data: [
-      { userId: 1, status: 'PLACED' },
-      { userId: 2, status: 'PACKED' },
-      { userId: 3, status: 'SHIPPED' },
-      { userId: 4, status: 'DELIVERED' },
-      { userId: 5, status: 'PLACED' },
-    ],
-  });
-
-  console.log('Orders seeded!');
-
-  // Seed OrderItems
-  const orderItems = await prisma.orderItem.createMany({
-    data: [
-      { orderId: 1, productId: 1, quantity: 1, price: 1500 },
-      { orderId: 2, productId: 2, quantity: 2, price: 1600 },
-      { orderId: 3, productId: 3, quantity: 3, price: 600 },
-      { orderId: 4, productId: 4, quantity: 1, price: 300 },
-      { orderId: 5, productId: 5, quantity: 2, price: 1200 },
-    ],
-  });
-
-  console.log('OrderItems seeded!');
 }
 
 main()
-  .then(() => {
-    console.log('Seeding completed successfully!');
-  })
   .catch((e) => {
     console.error('Seeding failed:', e);
+    process.exit(1);
   })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .finally(async () => await prisma.$disconnect());

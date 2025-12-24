@@ -1,5 +1,5 @@
 //Prisma + business logic for user-related operations
-import prisma from '../../prisma/client.js';
+import prisma from '../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 import type { User, UpdateUserInfo } from '../utils/types.js';
 import { removeUndefined } from '../utils/types.js';

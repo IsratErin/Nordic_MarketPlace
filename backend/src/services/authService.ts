@@ -1,4 +1,4 @@
-import prisma from '../../prisma/client.js';
+import prisma from '../prisma/client.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { signAccessToken, signRefreshToken } from '../utils/jwt.js';
 import { handlePrismaError } from '../utils/prismaError.js';
@@ -28,7 +28,7 @@ const registerUser = async (data: RegisterUserInput): Promise<AuthResult['user']
         password: await hashPassword(data.password),
         name: data.name,
         address: data.address,
-        role: data.role ?? 'USER',
+        role: data.role ?? 'ADMIN',
       },
     });
     const { password: _, ...safeUser } = user;

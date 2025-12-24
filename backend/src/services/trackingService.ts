@@ -1,4 +1,4 @@
-import prisma from '../../prisma/client.js';
+import prisma from '../prisma/client.js';
 import { handlePrismaError } from '../utils/prismaError.js';
 
 // Get tracking status for a specific order

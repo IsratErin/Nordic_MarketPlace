@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as productService from '../services/productService.js';
 import logger from '../logger.js';
-import { productSchema, newProductSchema } from '../utils/validators.js';
+import { productSchema, newProductSchema, updateProductSchema } from '../utils/validators.js';
 //import type { Product } from '../utils/types.js';
 
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
@@ -62,7 +62,8 @@ const updateProduct = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const productId = Number(req.params.id);
     const updateData = req.body;
-    const validatedUpdateData = newProductSchema.parse(updateData);
+    console.log(`Update product data received in controller: ${JSON.stringify(updateData)}`);
+    const validatedUpdateData = updateProductSchema.parse(updateData);
     const updatedProduct = await productService.updateProductInfo(productId, validatedUpdateData);
     logger.info(`Product ID: ${productId} updated successfully.`);
     res.json({ updatedProduct });
