@@ -18,13 +18,13 @@ export default function AppRouter() {
   return (
     <Suspense fallback={<div className="p-4">Loading...</div>}>
       <Routes>
-        {/* Public Product routes */}
+        {/* Product routes */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<ProductsPage />} />
           <Route path="/products/:id" element={<ProductDetailPage />} />
         </Route>
 
-        {/* Auth routes */}
+        {/* Authentication routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 

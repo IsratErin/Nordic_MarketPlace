@@ -32,6 +32,7 @@ const mockCategories = [
 
 export default function ProductsPage() {
   const dispatch = useDispatch<AppDispatch>();
+  // Get isAdmin from useAuth hook so that we can render product list with with each product card with admin capabilities
   const { isAdmin } = useAuth();
   const [filters, setFilters] = useState<ProductFilters>({});
   const { products, loading, error } = useProducts(filters);
@@ -66,7 +67,7 @@ export default function ProductsPage() {
 
   const handleDeleteProduct = async (productId: number) => {
     if (
-      window.confirm(
+      globalThis.confirm(
         "Are you sure you want to delete this product? This action cannot be undone."
       )
     ) {
@@ -118,7 +119,7 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Product List */}
+      {/* Product List, Inside product list we have each product card that also tracks if the user is an admin */}
       <div className="container mx-auto px-4 py-6">
         <ProductList
           products={products}
