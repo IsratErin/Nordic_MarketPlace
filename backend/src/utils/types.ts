@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {
   userSchema,
   newProductSchema,
+  updateProductSchema,
   productSchema,
   updateUserSchema,
   orderSchema,
@@ -16,6 +17,7 @@ export type Product = z.infer<typeof productSchema>;
 export type Order = z.infer<typeof orderSchema>;
 export type RegisterUserInput = z.infer<typeof registerSchema>;
 export type LoginUserInput = z.infer<typeof loginSchema>;
+export type UpdateProductInfo = z.infer<typeof updateProductSchema>;
 
 // Utility type to remove: undefined properties from an object
 export function removeUndefined<T extends Record<string, unknown>>(

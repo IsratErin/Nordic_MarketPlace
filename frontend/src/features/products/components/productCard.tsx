@@ -6,13 +6,16 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
+import { Star, Pencil, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Product } from "../types/product.types";
 
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (productId: Product["id"]) => void;
+  onEdit?: (product: Product) => void;
+  onDelete?: (productId: Product["id"]) => void;
+  isAdmin?: boolean;
 }
 
 // Deterministic hash helpers
@@ -34,7 +37,13 @@ const COLORS = [
 ] as const;
 const BADGES = ["New", "Sale", "Limited", "Bestseller"] as const;
 
-export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+export const ProductCard = ({
+  product,
+  onAddToCart,
+  onEdit,
+  onDelete,
+  isAdmin = false,
+}: ProductCardProps) => {
   const backgroundColor = COLORS[product.name.length % COLORS.length];
   const badge = BADGES[seededInt(product.name, 0, BADGES.length - 1)];
   const rating =
@@ -42,17 +51,53 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const reviews = seededInt(product.name, 10, 500);
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); // prevents link click
+    e.stopPropagation();
     onAddToCart?.(product.id);
   };
 
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onEdit?.(product);
+  };
+
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onDelete?.(product.id);
+  };
+
   return (
-    <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+    <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg relative">
+      {/* Admin Controls - Top Right */}
+      {isAdmin && (
+        <div className="absolute right-2 top-2 z-10 flex gap-2">
+          <Button
+            size="icon"
+            variant="secondary"
+            className="h-8 w-8 bg-white/90 hover:bg-white shadow-md"
+            onClick={handleEdit}
+            title="Edit product"
+          >
+            <Pencil className="h-4 w-4 text-gray-700" />
+          </Button>
+          <Button
+            size="icon"
+            variant="destructive"
+            className="h-8 w-8 shadow-md"
+            onClick={handleDelete}
+            title="Delete product"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
       {/* Wrap Header + Content in Link */}
       <Link to={`/products/${product.id}`} className="flex flex-col flex-1">
         {/* Header */}
         <CardHeader className={`${backgroundColor} relative p-8`}>
-          <Badge variant="secondary" className="absolute right-3 top-3">
+          <Badge variant="secondary" className="absolute left-3 top-3">
             {badge}
           </Badge>
           <div className="flex min-h-[120px] items-center justify-center">
@@ -88,12 +133,20 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           <span className="text-2xl font-bold text-gray-900">
             {product.price} SEK
           </span>
+          {isAdmin && (
+            <p className="text-xs text-gray-500">
+              Stock: <span className="font-semibold">{product.stock}</span>
+            </p>
+          )}
         </CardContent>
       </Link>
 
       {/* Footer */}
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full" onClick={handleAddToCart}>
+        <Button
+          className="w-full bg-gray-900 hover:bg-gray-800"
+          onClick={handleAddToCart}
+        >
           Add to Cart
         </Button>
       </CardFooter>

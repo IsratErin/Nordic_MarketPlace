@@ -20,7 +20,7 @@ const getErrorMessage = (error: unknown): string => {
   return "An unknown error occurred";
 };
 
-// sliceName/actionDescription = products/fetchAll (redux action naming convention)
+// sliceName/actionDescription = "products/fetchAll" (redux action naming convention)
 export const fetchAllProducts = createAsyncThunk<
   Product[],
   void,

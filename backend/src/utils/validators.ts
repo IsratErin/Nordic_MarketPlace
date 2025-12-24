@@ -49,6 +49,16 @@ const newProductSchema = z.object({
   stock: z.number().int().nonnegative(),
   categoryId: z.number().int().positive(),
 });
+const updateProductSchema = z.object({
+  name: z.string().min(2).max(150),
+  description: z
+    .string()
+    .max(1000)
+    .optional()
+    .transform((v) => v ?? null),
+  price: z.number().nonnegative(),
+  stock: z.number().int().nonnegative(),
+});
 
 const orderStatusEnum = z.enum(['PLACED', 'PACKED', 'SHIPPED', 'DELIVERED']);
 const orderSchema = z.object({
@@ -115,4 +125,5 @@ export {
   updateUserSchema,
   registerSchema,
   loginSchema,
+  updateProductSchema,
 };
