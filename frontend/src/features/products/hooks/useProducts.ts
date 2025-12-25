@@ -33,7 +33,9 @@ export function useProducts(filters: ProductFilters = {}) {
   }, [dispatch, debouncedCategoryId]);
 
   // Filter products in-memory for price, search, and stock
-  const filteredProducts = (debouncedCategoryId ? productsByCategory : products)
+  const filteredProducts = (
+    debouncedCategoryId ? productsByCategory ?? [] : products ?? []
+  )
     .filter((product) =>
       debouncedSearchQuery
         ? product.name

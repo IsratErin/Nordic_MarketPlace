@@ -44,6 +44,28 @@ services:
         node dist/server.js
       "
 
+  # Frontend in development mode with hot-reloading, Changes to code reflect instantly without rebuilding container
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    env_file:
+      # Load Docker-specific environment variables
+      - ./frontend/.env.docker
+    ports:
+      # WHY: Map host port 5173 to container port 5173
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      # Bind mount enables hot-reloading, Changes in ./frontend/src update instantly in container
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+
   pgadmin:
     image: dpage/pgadmin4
     restart: always
