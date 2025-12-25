@@ -95,3 +95,17 @@ Integration-test flow:
 We remove dev-only tools (eslint, tests, nodemon, jest, etc.) because a production container should only contain what is required to run the application—nothing more.
 This improves: Security, Performance, Image size, Reliability,Operational clarity
 
+npm install problem: (use npm ci)
+Can resolve dependency ranges differently, Can modify package-lock.json,Two developers may get different dependency trees
+npm install pulls a newer version, package-lock.json may change silently
+Result:
+App works locally but Breaks in CI or production
+
+##Docker rebuilds only the layers that change. Everything after a changed layer is rebuilt.
+| Action            | Dev                   | Prod                   |
+| ----------------- | --------------------- | ---------------------- |
+| Start             | `docker-compose up`   | `docker-compose up -d` |
+| Code change       | auto reload           | rebuild                |
+| Dependency change | rebuild               | rebuild                |
+| Stop              | `docker-compose down` | `docker-compose down`  |
+| Image rebuild     | sometimes             | always                 |
