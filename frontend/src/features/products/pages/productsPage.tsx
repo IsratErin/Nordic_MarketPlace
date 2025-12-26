@@ -20,6 +20,7 @@ import type {
   CreateProductDTO,
   UpdateProductDTO,
 } from "../types/product.types";
+import { addToCart } from "@/features/cart/store/cartSlice";
 
 // Mock categories for now
 const mockCategories = [
@@ -47,8 +48,22 @@ export default function ProductsPage() {
     setFilters({});
   };
 
-  const handleAddToCart = (productId: string | number) => {
-    console.log("Add to cart:", productId);
+  const handleAddToCart = async (productId: number) => {
+    const cartItem = products.find((p) => p.id === productId);
+    if (!cartItem) {
+      console.error("Product not found to add to cart with id:", productId);
+      return;
+    }
+    dispatch(
+      addToCart({
+        productId: cartItem.id,
+        name: cartItem.name,
+        price: cartItem.price,
+        quantity: 1,
+        stock: cartItem.stock,
+      })
+    );
+    console.log("Added to cart:", productId);
     alert(`Product ${productId} added to cart!`);
   };
 
