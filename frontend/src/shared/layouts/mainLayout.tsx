@@ -34,7 +34,7 @@ export default function MainLayout() {
                 </Link>
                 {/* Cart */}
                 <Link
-                  to="/mycart"
+                  to="/cart"
                   className="relative p-2 rounded-md hover:bg-gray-100 transition"
                   aria-label="Cart"
                 >

@@ -42,3 +42,5 @@ We can call store.getState() to access the entire state at any time.
 
 dispatch: This method is used to send actions to the Redux store. 
 When we call store.dispatch(action), Redux runs the reducers and updates the state based on the action.
+
+## default exports by using export default something does not require matching name

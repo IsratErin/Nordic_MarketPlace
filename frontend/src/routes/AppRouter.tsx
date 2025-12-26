@@ -14,6 +14,8 @@ const ProductDetailPage = lazy(
 const RegisterPage = lazy(() => import("../features/auth/pages/registerPage"));
 const LoginPage = lazy(() => import("../features/auth/pages/loginPage"));
 
+const CartPage = lazy(() => import("../features/cart/pages/cartPage"));
+
 export default function AppRouter() {
   return (
     <Suspense fallback={<div className="p-4">Loading...</div>}>
@@ -27,6 +29,11 @@ export default function AppRouter() {
         {/* Authentication routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+
+        {/* Cart route */}
+        <Route element={<MainLayout />}>
+          <Route path="/cart" element={<CartPage />} />
+        </Route>
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
