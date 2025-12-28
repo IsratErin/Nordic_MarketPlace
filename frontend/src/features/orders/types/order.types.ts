@@ -35,7 +35,6 @@ export interface CreateOrderDTO {
 
 export interface CreateOrderResponse {
   order: Order;
-  message: string;
 }
 
 // Redux state interface

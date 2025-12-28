@@ -17,7 +17,7 @@ const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
     return error.message;
   }
-  return "An unknown error occurred";
+  return "An unknown error occurred in product related operations";
 };
 
 // sliceName/actionDescription = "products/fetchAll" (redux action naming convention)
