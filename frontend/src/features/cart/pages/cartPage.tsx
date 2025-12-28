@@ -65,7 +65,7 @@ export default function CartPage() {
           />
         )}
         {items.length === 0 && (
-          <Card className="p-8 flex flex-col items-center justify-center text-center bg-white border border-gray-200 rounded-lg shadow-sm min-h-[220px]">
+          <Card className="p-8 flex flex-col items-center justify-center text-center bg-white border border-gray-200 min-h-[400px] rounded-none shadow-none">
             {isNavigating ? (
               <div className="flex flex-col items-center gap-2">
                 <Loader2 className="animate-spin text-primary" size={32} />
@@ -92,11 +92,52 @@ export default function CartPage() {
 
       {items.length > 0 && (
         <div className="w-full lg:w-[380px] flex-shrink-0">
-          <CartSummary
-            total={total}
-            itemCount={items.reduce((sum, item) => sum + item.quantity, 0)}
-            onCheckout={handleCheckout}
-          />
+          <div className="bg-gray-100 border border-gray-200  p-6  space-y-3">
+            {/* Cart Summary */}
+            <CartSummary
+              total={total}
+              itemCount={items.reduce((sum, item) => sum + item.quantity, 0)}
+              onCheckout={handleCheckout}
+            />
+
+            <hr className="my-1" />
+
+            {/* Discount Code Section */}
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Discount code</h2>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Enter code"
+                  className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button className="bg-primary text-white px-4 py-2 hover:bg-primary/90 transition">
+                  Apply
+                </button>
+              </div>
+            </div>
+
+            <hr className="my-3" />
+
+            {/* Payment Methods Section */}
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Payment Methods</h2>
+              <div className="flex flex-wrap gap-3 items-center">
+                <span className="px-3 py-1 border rounded bg-gray-50">
+                  Swish
+                </span>
+                <span className="px-3 py-1 border rounded bg-gray-50">
+                  PayPal
+                </span>
+                <span className="px-3 py-1 border rounded bg-gray-50">
+                  Visa
+                </span>
+                <span className="px-3 py-1 border rounded bg-gray-50">
+                  Klarna
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -1,7 +1,14 @@
 import { Outlet, Link } from "react-router-dom";
 import { User, Heart, ShoppingCart } from "lucide-react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 export default function MainLayout() {
+  // cart count from the redux store
+  const cartCount = useSelector((state: RootState) =>
+    state.cart.items ? state.cart.items.length : 0
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -39,9 +46,11 @@ export default function MainLayout() {
                   aria-label="Cart"
                 >
                   <ShoppingCart className="w-5 h-5 text-black-00" />
-                  <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs rounded-full px-1.5 font-semibold shadow">
-                    {/* Cart items will be dynamically updated here*/}
-                  </span>
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-gray-500 text-white text-xs rounded-full px-1.5 font-semibold shadow">
+                      {cartCount}
+                    </span>
+                  )}
                 </Link>
               </div>
             </nav>
