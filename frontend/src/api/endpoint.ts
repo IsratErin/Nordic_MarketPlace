@@ -14,4 +14,9 @@ export const API_ENDPOINT = {
     Update_Product: (id: number) => `/products/admin/updateproduct/${id}`,
     Delete_Product: (id: number) => `/products/admin/deleteproduct/${id}`,
   },
+  ORDERS: {
+    Create_Order: "/orders/user/create",
+    Order_Detail: (orderId: number) => `/orders/user/info/${orderId}`,
+    User_All_Orders: (userId: number) => `/orders/user/${userId}`,
+  },
 } as const;
