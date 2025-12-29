@@ -16,6 +16,10 @@ const LoginPage = lazy(() => import("../features/auth/pages/loginPage"));
 
 const CartPage = lazy(() => import("../features/cart/pages/cartPage"));
 
+const CheckoutPage = lazy(
+  () => import("../features/orders/pages/checkoutPage")
+);
+
 export default function AppRouter() {
   return (
     <Suspense fallback={<div className="p-4">Loading...</div>}>
@@ -34,6 +38,9 @@ export default function AppRouter() {
         <Route element={<MainLayout />}>
           <Route path="/cart" element={<CartPage />} />
         </Route>
+
+        {/* Order routes */}
+        <Route path="/checkout" element={<CheckoutPage />} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

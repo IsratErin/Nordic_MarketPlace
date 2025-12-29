@@ -31,6 +31,7 @@ export interface Order {
 
 export interface CreateOrderDTO {
   productIds: number[]; // Array of product IDs to include in the order
+  userId?: number; // Optional user ID, will be set in the thunk if not provided
 }
 
 export interface CreateOrderResponse {
@@ -66,4 +67,23 @@ export interface OrderSummary {
   itemCount: number;
   orderId: number;
   orderDate: string;
+}
+
+export interface DeliveryAddress {
+  street: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}
+
+export interface CheckoutFormData {
+  deliveryAddress: DeliveryAddress;
+  paymentMethod: string;
+}
+
+export interface PaymentMethodType {
+  id: string;
+  name: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  badge?: string;
 }
