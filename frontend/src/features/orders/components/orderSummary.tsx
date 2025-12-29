@@ -36,10 +36,10 @@ export const OrderSummary = ({ order }: OrderSummaryProps) => {
   });
 
   return (
-    <Card className="w-full border-none rounded-none shadow-none">
-      <CardHeader className="border-b">
-        <CardTitle className="text-2xl font-bold text-gray-900">
-          Check Order and Confirm
+    <Card className="w-full bg-gray-50 border-none rounded-none shadow-none">
+      <CardHeader className="border-b ">
+        <CardTitle className="text-2xl font-semibold text-gray-900 ">
+          Check Your Order and Confirm
         </CardTitle>
       </CardHeader>
 

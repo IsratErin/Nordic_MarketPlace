@@ -40,7 +40,10 @@ export default function AppRouter() {
         </Route>
 
         {/* Order routes */}
-        <Route path="/checkout" element={<CheckoutPage />} />
+
+        <Route element={<MainLayout />}>
+          <Route path="/checkout" element={<CheckoutPage />} />
+        </Route>
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

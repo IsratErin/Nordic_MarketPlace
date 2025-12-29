@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/store/store";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { OrderSummary } from "../components/orderSummary";
 import { DeliveryOption } from "../components/deliveryOption";
 import { PaymentMethod } from "../components/paymentMethod";
@@ -93,11 +93,6 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleBackToCart = () => {
-    clearError();
-    navigate("/cart");
-  };
-
   const handleGoToOrders = () => {
     clearSuccess();
     resetCurrentOrder();
@@ -136,21 +131,6 @@ export default function CheckoutPage() {
   // Checkout page
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <Button
-            variant="ghost"
-            onClick={handleBackToCart}
-            size="sm"
-            className="hover:bg-gray-100"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Cart
-          </Button>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="container mx-auto px-2 py-0">
         {/* Error Message */}
@@ -175,7 +155,7 @@ export default function CheckoutPage() {
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {/* Left - Order Summary */}
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1 ">
             <OrderSummary order={previewOrder} />
           </div>
 
