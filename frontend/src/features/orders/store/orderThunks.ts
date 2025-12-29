@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { CreateOrderDTO, Order } from "../types/order.types";
-import { createOrder, OrderServiceError } from "../services/orderService";
+import { orderService, OrderServiceError } from "../services/orderService";
 
 // Helper function to extract error message
 const getErrorMessage = (error: unknown): string => {
@@ -20,7 +20,7 @@ export const createOrderThunk = createAsyncThunk<
   { rejectValue: string }
 >("orders/createOrder", async (orderData, { rejectWithValue }) => {
   try {
-    return await createOrder(orderData);
+    return await orderService.createOrder(orderData);
   } catch (error) {
     return rejectWithValue(getErrorMessage(error));
   }
