@@ -8,7 +8,6 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "ES2022",
-    "types": [],
     "moduleResolution": "nodenext",
     // For nodejs:
     // "lib": ["esnext"],
