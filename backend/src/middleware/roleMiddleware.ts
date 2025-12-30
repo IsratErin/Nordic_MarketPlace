@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import type { Role } from '../utils/types.js';
 import type { Request, Response, NextFunction } from 'express';
 
 export const authorize =

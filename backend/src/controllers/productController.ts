@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import * as productService from '../services/productService.js';
 import logger from '../logger.js';
 import { productSchema, newProductSchema, updateProductSchema } from '../utils/validators.js';
-//import type { Product } from '../utils/types.js';
+import type { Product } from '../utils/types.js';
 
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -34,7 +34,9 @@ const getAllProductsByCategory = async (req: Request, res: Response, next: NextF
   try {
     const categoryId = Number(req.params.categoryId);
     const products = await productService.getProductsByCategory(categoryId);
-    const validatedProducts = (products || []).map((product) => productSchema.parse(product));
+    const validatedProducts = (products || []).map((product: Product) =>
+      productSchema.parse(product),
+    );
     logger.info(
       `All products from Category: ${validatedProducts[0]?.category.name.toUpperCase()} retrieved successfully.`,
     );

@@ -27,3 +27,8 @@ export function removeUndefined<T extends Record<string, unknown>>(
     Object.entries(obj).filter(([_, value]) => value !== undefined),
   ) as Record<string, NonNullable<unknown>>;
 }
+
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
