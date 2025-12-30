@@ -9,6 +9,7 @@ import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import trackingRoutes from './routes/trackingRoutes.js';
 import cookieParser from 'cookie-parser';
+import type { Request, Response } from 'express';
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.use('/orders', orderRoutes);
 app.use('/tracking', trackingRoutes);
 
 // Health check endpoint for Render
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),

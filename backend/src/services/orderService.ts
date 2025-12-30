@@ -1,7 +1,7 @@
 import prisma from '../prisma/client.js';
 import { ApiError } from '../utils/apiError.js';
 import { handlePrismaError } from '../utils/prismaError.js';
-import type { Order, Product } from '../utils/types.js';
+import type { Order } from '../utils/types.js';
 
 const createOrder = async (userId: number, productIds: number[]) => {
   try {
@@ -15,7 +15,7 @@ const createOrder = async (userId: number, productIds: number[]) => {
       data: {
         userId,
         items: {
-          create: products.map((product: Product) => ({
+          create: products.map((product: { id: number; price: number }) => ({
             productId: product.id,
             quantity: 1,
             price: product.price,

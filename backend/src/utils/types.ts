@@ -10,6 +10,8 @@ import {
   loginSchema,
 } from './validators.js';
 
+export { Role } from '@prisma/client';
+
 export type User = z.infer<typeof userSchema>;
 export type UpdateUserInfo = z.infer<typeof updateUserSchema>;
 export type NewProductInfo = z.infer<typeof newProductSchema>;
@@ -26,9 +28,4 @@ export function removeUndefined<T extends Record<string, unknown>>(
   return Object.fromEntries(
     Object.entries(obj).filter(([_, value]) => value !== undefined),
   ) as Record<string, NonNullable<unknown>>;
-}
-
-export enum Role {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
 }
