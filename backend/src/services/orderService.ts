@@ -15,7 +15,7 @@ const createOrder = async (userId: number, productIds: number[]) => {
       data: {
         userId,
         items: {
-          create: products.map((product) => ({
+          create: products.map((product: { id: number; price: number }) => ({
             productId: product.id,
             quantity: 1,
             price: product.price,
