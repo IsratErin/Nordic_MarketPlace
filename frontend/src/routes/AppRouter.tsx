@@ -31,8 +31,10 @@ export default function AppRouter() {
         </Route>
 
         {/* Authentication routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route element={<MainLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
 
         {/* Cart route */}
         <Route element={<MainLayout />}>

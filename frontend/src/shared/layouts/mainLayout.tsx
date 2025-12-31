@@ -1,14 +1,26 @@
-import { Outlet, Link } from "react-router-dom";
-import { User, Heart, ShoppingCart } from "lucide-react";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/store";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { User, Heart, ShoppingCart, LogOut } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState, AppDispatch } from "../../store/store";
+import { logoutUser } from "../../features/auth/store/authThunks";
 import Footer from "../components/footer";
 
 export default function MainLayout() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   // cart count from the redux store
   const cartCount = useSelector((state: RootState) =>
     state.cart.items ? state.cart.items.length : 0
   );
+
+  // auth state from redux store
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -21,14 +33,16 @@ export default function MainLayout() {
             </h1>
             <nav>
               <div className="flex items-center gap-3">
-                {/* User Account */}
-                <Link
-                  to="/register"
-                  className="p-2 rounded-md hover:bg-gray-100 transition"
-                  aria-label="Account"
-                >
-                  <User className="w-5 h-5 text-black-00" />
-                </Link>
+                {/* User Account*/}
+                {!isAuthenticated && (
+                  <Link
+                    to="/login"
+                    className="p-2 rounded-md hover:bg-gray-100 transition"
+                    aria-label="Login"
+                  >
+                    <User className="w-5 h-5 text-black-00" />
+                  </Link>
+                )}
                 {/* Wishlist */}
                 <Link
                   to="/mywishlist"
@@ -53,6 +67,17 @@ export default function MainLayout() {
                     </span>
                   )}
                 </Link>
+                {/* Logout button - show only when authenticated */}
+                {isAuthenticated && (
+                  <button
+                    onClick={handleLogout}
+                    className="p-2 rounded-md hover:bg-gray-100 transition"
+                    aria-label="Logout"
+                    title="Logout"
+                  >
+                    <LogOut className="w-5 h-5 text-black-00" />
+                  </button>
+                )}
               </div>
             </nav>
           </div>
