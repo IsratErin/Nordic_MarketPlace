@@ -2,6 +2,7 @@ import { Outlet, Link } from "react-router-dom";
 import { User, Heart, ShoppingCart } from "lucide-react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
+import Footer from "../components/footer";
 
 export default function MainLayout() {
   // cart count from the redux store
@@ -64,13 +65,7 @@ export default function MainLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-12">
-        <div className="container mx-auto px-4 py-6">
-          <p className="text-center text-gray-600 text-sm">
-            © 2025 Nordic Marketplace. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
