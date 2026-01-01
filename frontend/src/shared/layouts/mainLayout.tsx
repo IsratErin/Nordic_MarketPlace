@@ -1,13 +1,26 @@
-import { Outlet, Link } from "react-router-dom";
-import { User, Heart, ShoppingCart } from "lucide-react";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/store";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { User, Heart, ShoppingCart, LogOut } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState, AppDispatch } from "../../store/store";
+import { logoutUser } from "../../features/auth/store/authThunks";
+import Footer from "../components/footer";
 
 export default function MainLayout() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   // cart count from the redux store
   const cartCount = useSelector((state: RootState) =>
     state.cart.items ? state.cart.items.length : 0
   );
+
+  // auth state from redux store
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -15,19 +28,23 @@ export default function MainLayout() {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-              Nordic Marketplace
-            </h1>
+            <Link to="/" className="inline-block">
+              <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                Nordic Marketplace
+              </h1>
+            </Link>
             <nav>
               <div className="flex items-center gap-3">
-                {/* User Account */}
-                <Link
-                  to="/register"
-                  className="p-2 rounded-md hover:bg-gray-100 transition"
-                  aria-label="Account"
-                >
-                  <User className="w-5 h-5 text-black-00" />
-                </Link>
+                {/* User Account*/}
+                {!isAuthenticated && (
+                  <Link
+                    to="/login"
+                    className="p-2 rounded-md hover:bg-gray-100 transition"
+                    aria-label="Login"
+                  >
+                    <User className="w-5 h-5 text-black-00" />
+                  </Link>
+                )}
                 {/* Wishlist */}
                 <Link
                   to="/mywishlist"
@@ -52,6 +69,17 @@ export default function MainLayout() {
                     </span>
                   )}
                 </Link>
+                {/* Logout button - show only when authenticated */}
+                {isAuthenticated && (
+                  <button
+                    onClick={handleLogout}
+                    className="p-2 rounded-md hover:bg-gray-100 transition"
+                    aria-label="Logout"
+                    title="Logout"
+                  >
+                    <LogOut className="w-5 h-5 text-black-00" />
+                  </button>
+                )}
               </div>
             </nav>
           </div>
@@ -64,13 +92,7 @@ export default function MainLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-12">
-        <div className="container mx-auto px-4 py-6">
-          <p className="text-center text-gray-600 text-sm">
-            © 2025 Nordic Marketplace. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

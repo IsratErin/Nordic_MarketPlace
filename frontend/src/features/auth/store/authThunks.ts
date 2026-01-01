@@ -16,7 +16,7 @@ const getErrorMessage = (error: unknown): string => {
   return "An unknown error occurred";
 };
 
-const registerUser = createAsyncThunk<
+export const registerUser = createAsyncThunk<
   { message: string },
   RegisterData,
   { rejectValue: string }
@@ -28,7 +28,7 @@ const registerUser = createAsyncThunk<
   }
 });
 
-const loginUser = createAsyncThunk<
+export const loginUser = createAsyncThunk<
   {
     user: AuthState["user"];
     accessToken: string;
@@ -38,7 +38,6 @@ const loginUser = createAsyncThunk<
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
     const response = await authService.login(credentials);
-    // Just store access token in Redux (ignore refresh token for now)
     console.log("Login response:", response);
     return {
       user: response.user,
@@ -49,7 +48,7 @@ const loginUser = createAsyncThunk<
   }
 });
 
-const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
+export const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
@@ -60,8 +59,7 @@ const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
   }
 );
 
-// No token persistence across page refresh for now
-const initializeAuth = createAsyncThunk<
+export const initializeAuth = createAsyncThunk<
   {
     user: AuthState["user"];
     accessToken: string;
@@ -69,10 +67,5 @@ const initializeAuth = createAsyncThunk<
   void,
   { rejectValue: string }
 >("auth/initialize", async () => {
-  // No stored auth state - user must login again after page refresh
-  // authservice.refreshToken could be used here to get a new access token using the refresh token cookie
-  // authservice.getCurrentUser could be used later to get user details
   return null;
 });
-
-export { registerUser, loginUser, logoutUser, initializeAuth };

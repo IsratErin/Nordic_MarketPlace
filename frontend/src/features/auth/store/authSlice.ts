@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { User, AuthState as BaseAuthState } from "../types/auth.types";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { registerUser, loginUser, logoutUser } from "./authThunks";
 
 // Extending AuthState to include loading and error states
 export interface AuthState extends BaseAuthState {
@@ -43,57 +42,81 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Register
+    // Used string patterns instead of "addCase" to avoid circular dependency
     builder
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(registerUser.fulfilled, (state) => {
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-
-    // Login
-    builder
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
-        state.isAuthenticated = true;
-        state.error = null;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-
-    // Logout
-    builder
-      .addCase(logoutUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.loading = false;
-        state.user = null;
-        state.accessToken = null;
-        state.isAuthenticated = false;
-        state.error = null;
-      })
-      .addCase(logoutUser.rejected, (state) => {
-        state.loading = false;
-        state.user = null;
-        state.accessToken = null;
-        state.isAuthenticated = false;
-      });
+      // Register
+      .addMatcher(
+        (action) => action.type === "auth/register/pending",
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === "auth/register/fulfilled",
+        (state) => {
+          state.loading = false;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === "auth/register/rejected",
+        (state, action: PayloadAction<string | undefined>) => {
+          state.loading = false;
+          state.error = action.payload ?? "Registration failed";
+        }
+      )
+      // Login
+      .addMatcher(
+        (action) => action.type === "auth/login/pending",
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === "auth/login/fulfilled",
+        (state, action: PayloadAction<{ user: User; accessToken: string }>) => {
+          state.loading = false;
+          state.user = action.payload.user;
+          state.accessToken = action.payload.accessToken;
+          state.isAuthenticated = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === "auth/login/rejected",
+        (state, action: PayloadAction<string | undefined>) => {
+          state.loading = false;
+          state.error = action.payload ?? "Login failed";
+        }
+      )
+      // Logout
+      .addMatcher(
+        (action) => action.type === "auth/logout/pending",
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === "auth/logout/fulfilled",
+        (state) => {
+          state.loading = false;
+          state.user = null;
+          state.accessToken = null;
+          state.isAuthenticated = false;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === "auth/logout/rejected",
+        (state) => {
+          state.loading = false;
+          state.user = null;
+          state.accessToken = null;
+          state.isAuthenticated = false;
+        }
+      );
   },
 });
 
