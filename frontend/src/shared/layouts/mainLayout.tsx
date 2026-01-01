@@ -28,9 +28,11 @@ export default function MainLayout() {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-              Nordic Marketplace
-            </h1>
+            <Link to="/" className="inline-block">
+              <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                Nordic Marketplace
+              </h1>
+            </Link>
             <nav>
               <div className="flex items-center gap-3">
                 {/* User Account*/}
