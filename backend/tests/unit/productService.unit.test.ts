@@ -1,7 +1,7 @@
 import { jest, describe, expect, it, beforeEach } from '@jest/globals';
 import type { Product, NewProductInfo } from '../../src/utils/types.js';
 
-jest.unstable_mockModule('../../prisma/client.js', () => ({
+jest.unstable_mockModule('../../src/prisma/client.js', () => ({
   __esModule: true,
   default: {
     product: {
@@ -22,7 +22,7 @@ const {
   updateProductInfo,
   deleteProductInfo,
 } = await import('../../src/services/productService.js');
-const { default: prisma } = await import('../../prisma/client.js');
+const { default: prisma } = await import('../../src/prisma/client.js');
 
 //mocked functions with proper types
 const mockFindMany = prisma.product.findMany as unknown as jest.MockedFunction<

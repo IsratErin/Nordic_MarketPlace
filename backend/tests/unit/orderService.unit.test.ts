@@ -1,8 +1,7 @@
 import { jest, describe, expect, it, beforeEach } from '@jest/globals';
-import type { User, Order } from '../../src/utils/types.js';
-import { tr } from 'zod/locales';
+import type { Order } from '../../src/utils/types.js';
 
-jest.unstable_mockModule('../../prisma/client.js', () => ({
+jest.unstable_mockModule('../../src/prisma/client.js', () => ({
   __esModule: true,
   default: {
     order: {
@@ -26,7 +25,7 @@ const {
   deleteOrder,
   admingetOrderInfo,
 } = await import('../../src/services/orderService.js');
-const { default: prisma } = await import('../../prisma/client.js');
+const { default: prisma } = await import('../../src/prisma/client.js');
 
 // Mocked functions with proper types
 const mockOrderCreate = prisma.order.create as unknown as jest.MockedFunction<

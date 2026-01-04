@@ -1,7 +1,7 @@
 import { jest, describe, expect, it, beforeEach } from '@jest/globals';
 import type { User } from '../../src/utils/types.js';
 
-jest.unstable_mockModule('../../prisma/client.js', () => ({
+jest.unstable_mockModule('../../src/prisma/client.js', () => ({
   __esModule: true, // for default export
   default: {
     user: {
@@ -21,7 +21,7 @@ jest.unstable_mockModule('../../src/utils/prismaError.js', () => ({
  * - Ensures the imported Prisma client and userService is the mocked version
  */
 const { getUser, updateUser, allUsers } = await import('../../src/services/userService.js');
-const { default: prisma } = await import('../../prisma/client.js');
+const { default: prisma } = await import('../../src/prisma/client.js');
 const { handlePrismaError } = await import('../../src/utils/prismaError.js');
 
 // Type assertion for better type safety in tests
