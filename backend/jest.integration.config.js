@@ -15,6 +15,8 @@ export default {
   },
   clearMocks: true,
   testTimeout: 30000,
+  // Force tests to run in band (sequentially)
+  runInBand: true,
   // Add coverage configuration
   collectCoverageFrom: ['src/**/*.ts', '!src/server.ts'],
   coverageThreshold: {
