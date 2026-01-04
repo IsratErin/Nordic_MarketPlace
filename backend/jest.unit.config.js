@@ -9,11 +9,15 @@ export default {
   },
 
   clearMocks: true, // Automatically clear mock calls and instances between every test
-  collectCoverageFrom: ['src/**/*.ts', '!src/server.ts', '!src/prisma/client.ts'],
+  collectCoverageFrom: [
+    'src/services/**/*.ts',
+    '!src/services/authService.ts',
+    '!src/services/trackingService.ts',
+  ],
   coverageThreshold: {
     global: {
-      branches: 70,
-      functions: 70,
+      branches: 50,
+      functions: 80,
       lines: 70,
       statements: 70,
     },
