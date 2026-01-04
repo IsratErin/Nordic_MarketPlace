@@ -15,4 +15,14 @@ export default {
   },
   clearMocks: true,
   testTimeout: 30000,
+  // Add coverage configuration
+  collectCoverageFrom: ['src/**/*.ts', '!src/server.ts'],
+  coverageThreshold: {
+    global: {
+      branches: 60,
+      functions: 60,
+      lines: 60,
+      statements: 60,
+    },
+  },
 };

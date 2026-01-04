@@ -16,7 +16,9 @@
     "db:test:down": "docker compose --env-file .env.test -f docker-compose.test.yml down -v",
     "db:test:migrate": "cross-env NODE_ENV=test dotenv -e .env.test prisma migrate deploy",
     "test:int": "cross-env NODE_ENV=test dotenv -e .env.test -- node --experimental-vm-modules ./node_modules/jest/bin/jest --config jest.integration.config.js",
-    "test:int:full": "npm run db:test:up && npm run db:test:migrate && npm run test:int && npm run db:test:down"
+    "test:int:full": "npm run db:test:up && npm run db:test:migrate && npm run test:int && npm run db:test:down",
+    "test:unit:ci": "node --experimental-vm-modules ./node_modules/jest/bin/jest --config jest.unit.config.js --ci --coverage",
+    "test:int:ci": "node --experimental-vm-modules ./node_modules/jest/bin/jest --config jest.integration.config.js --ci --coverage"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
