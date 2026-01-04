@@ -8,6 +8,6 @@ export default defineConfig({
     seed: 'npx tsx prisma/seed.ts',
   },
   datasource: {
-    url: env('DATABASE_URL'),
+    url: env('DATABASE_URL') || 'postgresql://ci:ci_flow@localhost:5432/ci_db?schema=public',
   },
 });
