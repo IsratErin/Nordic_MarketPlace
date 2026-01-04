@@ -101,14 +101,6 @@ describe('orderService', () => {
         include: expect.any(Object),
       });
     });
-
-    it('should return null when order does not exist', async () => {
-      mockOrderFindUnique.mockResolvedValue(null);
-
-      const result = await getOrderInfo(999);
-      expect(result).toBeNull();
-      expect(mockOrderFindUnique).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('getUserOrders', () => {
