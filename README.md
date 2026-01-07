@@ -552,6 +552,10 @@ Nordic_MarketPlace/
 
 ### Entity Relationship Diagram
 
+Here is the Entity Relationship Diagram for the project:
+
+![ERD Diagram](erd_image/erd.png)
+
 ## Design Patterns & Best Practices
 
 ### Patterns Used
