@@ -50,44 +50,44 @@ Nordic Marketplace is a full-stack e-commerce platform featuring a React SPA fro
 ### High-Level Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              CLIENT LAYER                                    │
+┌────────────────────────────────────────────────────────────────────────────┐
+│                              CLIENT LAYER                                  │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                     React SPA (Vite + TypeScript)                    │   │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌────────────┐ │   │
-│  │  │   Products  │  │    Auth     │  │    Cart     │  │   Orders   │ │   │
-│  │  │   Feature   │  │   Feature   │  │   Feature   │  │   Feature  │ │   │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘  └────────────┘ │   │
+│  │                     React SPA (Vite + TypeScript)                   │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌────────────┐  │   │
+│  │  │   Products  │  │    Auth     │  │    Cart     │  │   Orders   │  │   │
+│  │  │   Feature   │  │   Feature   │  │   Feature   │  │   Feature  │  │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └────────────┘  │   │
 │  │                    ↓ Redux Toolkit (State Management) ↓             │   │
 │  │                    ↓ Axios (HTTP Client + Interceptors) ↓           │   │
 │  └─────────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────────────────────────────────────────┘
                                       │
                                       │ HTTPS/REST
                                       ↓
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              API LAYER                                       │
+┌────────────────────────────────────────────────────────────────────────────┐
+│                              API LAYER                                     │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                   Express.js (Node.js Runtime)                       │   │
+│  │                   Express.js (Node.js Runtime)                      │   │
 │  │  ┌─────────────────────────────────────────────────────────────┐    │   │
-│  │  │  Middleware: Auth → Role → Validation → Rate Limiting        │    │   │
+│  │  │  Middleware: Auth → Role → Validation → Rate Limiting       │    │   │
 │  │  └─────────────────────────────────────────────────────────────┘    │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐           │   │
-│  │  │  Routes  │→ │Controllers│→ │ Services │→ │  Prisma  │           │   │
-│  │  └──────────┘  └──────────┘  └──────────┘  └──────────┘           │   │
+│  │  ┌──────────┐  ┌───────────┐  ┌──────────┐  ┌──────────┐            │   │
+│  │  │  Routes  │→ │Controllers│→ │ Services │→ │  Prisma  │            │   │
+│  │  └──────────┘  └───────────┘  └──────────┘  └──────────┘            │   │
 │  └─────────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────────────────────────────────────────┘
                                       │
                                       │ Prisma ORM
                                       ↓
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                            DATA LAYER                                        │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │                     PostgreSQL Database                              │   │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  │   │
-│  │  │  Users  │  │Products │  │ Orders  │  │OrderItem│  │ Category │  │   │
-│  │  └─────────┘  └─────────┘  └─────────┘  └─────────┘  └──────────┘  │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
+│                            DATA LAYER                                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                     PostgreSQL Database                             │    │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐   │    │
+│  │  │  Users  │  │Products │  │ Orders  │  │OrderItem│  │ Category │   │    │
+│  │  └─────────┘  └─────────┘  └─────────┘  └─────────┘  └──────────┘   │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -100,10 +100,10 @@ The frontend follows a **Feature-Sliced Design** pattern combined with **Flux ar
 │                    PRESENTATION LAYER                           │
 │  Pages → Components → UI Components (shadcn/ui)                 │
 ├─────────────────────────────────────────────────────────────────┤
-│                    STATE MANAGEMENT LAYER                        │
+│                    STATE MANAGEMENT LAYER                       │
 │  Redux Store → Slices → Thunks (Async Actions)                  │
 ├─────────────────────────────────────────────────────────────────┤
-│                    DATA ACCESS LAYER                             │
+│                    DATA ACCESS LAYER                            │
 │  Services → API Client → Axios Instance (with Interceptors)     │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -146,10 +146,10 @@ The backend implements a **Layered Architecture** with clear separation of conce
 
 ```
 User Action → React Component → Dispatch Thunk → Service Call → Axios Request
-                                                                      │
+                                                                     │
                          Redux State Update ← Thunk Fulfilled ←──────┘
-                                                                      │
-                                                    Express Route ←───┘
+                                                                     │
+                                                    Express Route ←──┘
                                                          │
                                     Controller → Service → Prisma → PostgreSQL
 ```
@@ -554,7 +554,7 @@ Nordic_MarketPlace/
 
 Here is the Entity Relationship Diagram for the project:
 
-![ERD Diagram](erd_image/erd.png)
+![ERD Diagram](backend/erd_image/erd.png)
 
 ## Design Patterns & Best Practices
 
