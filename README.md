@@ -1,6 +1,8 @@
 # Nordic Marketplace
 
 A modern, full-stack e-commerce marketplace built with React, Node.js, Express, TypeScript, and PostgreSQL. This project demonstrates production-ready architecture, security best practices, and scalable design patterns.
+##  A Quick Demo
+https://github.com/user-attachments/assets/bda85571-c0d1-44fd-83b4-cadb1560b228
 
 ## 📑 Table of Contents
 
