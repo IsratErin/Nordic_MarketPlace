@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 import type { CreateProductDTO } from "../types/product.types";
+import { toast } from "react-hot-toast";
 
 interface AddProductModalProps {
   onClose: () => void;
@@ -31,8 +32,10 @@ export const AddProductModal = ({
     try {
       await onSubmit(formData);
       onClose();
+      toast.success("Product created successfully!");
     } catch (error) {
       console.error("Failed to create product:", error);
+      toast.error("Failed to create product. Please try again.");
     } finally {
       setLoading(false);
     }

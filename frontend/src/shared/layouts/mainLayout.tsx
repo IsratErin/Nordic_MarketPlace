@@ -5,6 +5,7 @@ import type { RootState, AppDispatch } from "../../store/store";
 import { logoutUser } from "../../features/auth/store/authThunks";
 import Footer from "../components/footer";
 import { Analytics } from "@vercel/analytics/react";
+import { toast } from "react-hot-toast";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -20,7 +21,10 @@ export default function MainLayout() {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
-    navigate("/login");
+    toast.success("Logged out successfully!");
+    setTimeout(() => {
+      navigate("/login");
+    }, 200);
   };
 
   return (

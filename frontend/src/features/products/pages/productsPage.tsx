@@ -88,6 +88,7 @@ export default function ProductsPage() {
       )
     ) {
       await dispatch(deleteProduct(productId));
+      toast.success("Product deleted successfully!");
     }
   };
 
@@ -100,10 +101,6 @@ export default function ProductsPage() {
             <div className="flex items-center justify-center gap-2 text-sm">
               <Shield className="h-4 w-4" />
               <span className="font-semibold">Admin Mode</span>
-              <span className="text-gray-300">|</span>
-              <span className="text-gray-300">
-                You have full product management access
-              </span>
             </div>
           </div>
         </div>
