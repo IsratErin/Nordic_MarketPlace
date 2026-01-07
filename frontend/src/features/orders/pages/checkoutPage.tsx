@@ -14,6 +14,7 @@ import { useOrders } from "../hooks/useOrders";
 import { useCheckoutForm } from "../hooks/useCheckoutForm";
 import { clearCart } from "@/features/cart/store/cartSlice";
 import type { Order } from "../types/order.types";
+import { toast } from "react-hot-toast";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -87,9 +88,11 @@ export default function CheckoutPage() {
 
     try {
       await createOrder({ productIds }); // order is created
+      toast.success("Order placed successfully!");
       dispatch(clearCart());
     } catch (err) {
       console.error("Failed to create order:", err);
+      toast.error("Failed to place order. Please try again.");
     }
   };
 

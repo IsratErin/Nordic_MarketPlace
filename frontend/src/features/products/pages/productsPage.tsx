@@ -21,6 +21,7 @@ import type {
   UpdateProductDTO,
 } from "../types/product.types";
 import { addToCart } from "@/features/cart/store/cartSlice";
+import { toast } from "react-hot-toast";
 
 // Mock categories for now
 const mockCategories = [
@@ -64,7 +65,7 @@ export default function ProductsPage() {
       })
     );
     console.log("Added to cart:", productId);
-    alert(`Product ${productId} added to cart!`);
+    toast.success(`Product ${productId} added to cart!`);
   };
 
   // Admin handlers

@@ -7,8 +7,8 @@ export function useAuth() {
   );
   const isAdmin = user?.role === "ADMIN";
 
-  console.log("useAuth - user:", user);
-  console.log("useAuth - isAdmin:", isAdmin);
+  //console.log("useAuth - user:", user);
+  //console.log("useAuth - isAdmin:", isAdmin);
 
   return { user, isAuthenticated, isAdmin };
 }
