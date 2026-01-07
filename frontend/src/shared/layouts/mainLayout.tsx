@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/store";
 import { logoutUser } from "../../features/auth/store/authThunks";
 import Footer from "../components/footer";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -93,6 +94,8 @@ export default function MainLayout() {
 
       {/* Footer */}
       <Footer />
+      {/* Vercel Analytics */}
+      <Analytics />
     </div>
   );
 }

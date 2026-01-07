@@ -65,7 +65,7 @@ export default function ProductsPage() {
       })
     );
     console.log("Added to cart:", productId);
-    toast.success(`Product ${productId} added to cart!`);
+    toast.success(`Product: ${cartItem.name} added to cart!`);
   };
 
   // Admin handlers
