@@ -125,19 +125,19 @@ The backend implements a **Layered Architecture** with clear separation of conce
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                      ROUTES LAYER                                │
+│                      ROUTES LAYER                               │
 │  Define endpoints, apply middleware, delegate to controllers    │
 ├─────────────────────────────────────────────────────────────────┤
-│                   CONTROLLERS LAYER                              │
+│                   CONTROLLERS LAYER                             │
 │  HTTP request/response handling, input validation               │
 ├─────────────────────────────────────────────────────────────────┤
-│                    SERVICES LAYER                                │
+│                    SERVICES LAYER                               │
 │  Business logic, orchestration, transaction management          │
 ├─────────────────────────────────────────────────────────────────┤
-│                  DATA ACCESS LAYER                               │
+│                  DATA ACCESS LAYER                              │
 │  Prisma ORM, database queries, entity mapping                   │
 ├─────────────────────────────────────────────────────────────────┤
-│                   MIDDLEWARE LAYER                               │
+│                   MIDDLEWARE LAYER                              │
 │  Authentication, Authorization, Error Handling, Logging         │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -230,9 +230,9 @@ User Action → React Component → Dispatch Thunk → Service Call → Axios Re
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                    AUTHENTICATION FLOW                            │
+│                    AUTHENTICATION FLOW                           │
 ├──────────────────────────────────────────────────────────────────┤
-│  1. User submits credentials                                      │
+│  1. User submits credentials                                     │
 │  2. Backend validates against hashed password (bcrypt, 12 rounds)│
 │  3. Server issues JWT access token (short-lived) + refresh token │
 │  4. Frontend stores access token in Redux state (memory-only)    │
