@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, ArrowRight } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -24,6 +25,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     e.preventDefault();
     const result = await dispatch(loginUser(credentials));
     if (result.meta.requestStatus === "fulfilled" && onSuccess) {
+      toast.success("Signed in successfully!");
       onSuccess();
     }
   };

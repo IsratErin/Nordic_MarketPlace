@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 import type { Product, UpdateProductDTO } from "../types/product.types";
+import { toast } from "react-hot-toast";
 
 interface EditProductModalProps {
   product: Product;
@@ -32,9 +33,11 @@ export const EditProductModal = ({
     setLoading(true);
     try {
       await onSubmit(product.id, formData);
+      toast.success("Product updated successfully!");
       onClose();
     } catch (error) {
       console.error("Failed to update product:", error);
+      toast.error("Failed to update product. Please try again.");
     } finally {
       setLoading(false);
     }
